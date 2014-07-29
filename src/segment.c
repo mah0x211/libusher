@@ -208,7 +208,7 @@ int seg_add( usher_seg_t *seg, uint8_t *path )
                 if( seg_split( seg, (size_t)(m - seg->path), child ) == 0 ){
                     printf("parent  %zd -> %s\n", seg->len, seg->path );
                     printf("sibling %zd -> %s\n", child->len, child->path );
-                    break;
+                    return 0;
                 }
                 pdealloc( child );
             }
