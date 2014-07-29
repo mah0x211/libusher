@@ -29,8 +29,8 @@ typedef struct {
 
 #define USHER_SEG_NODE  0x1
 #define USHER_SEG_LEAF  0x2
-#define USHER_SEG_EDGE  0x3
-#define USHER_SEG_VAR   0x4
+#define USHER_SEG_EDGE  0x4
+#define USHER_SEG_VAR   0x8
 
 typedef struct _usher_seg {
     uint8_t type;
