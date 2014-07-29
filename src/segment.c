@@ -46,7 +46,7 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev )
             ptr++;
         }
         
-        len = ptr - path;
+        len = (size_t)(ptr - path);
         if( ( seg->path = pnalloc( len + 1, uint8_t ) ) )
         {
             memcpy( seg->path, path, len );
@@ -205,7 +205,7 @@ int seg_add( usher_seg_t *seg, uint8_t *path )
             else if( ( child = seg_alloc( k, prev ) ) )
             {
                 // split node and append child segment
-                if( seg_split( seg, m - seg->path, child ) == 0 ){
+                if( seg_split( seg, (size_t)(m - seg->path), child ) == 0 ){
                     printf("parent  %zd -> %s\n", seg->len, seg->path );
                     printf("sibling %zd -> %s\n", child->len, child->path );
                     break;
