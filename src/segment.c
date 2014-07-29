@@ -76,7 +76,7 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev )
                 seg->nchildren = 0;
                 // set type as node-segment
                 // NOTE: variable-segment have no trailing-slash
-                if( seg->path[len-1] == '/' ){
+                if( seg->path[len-1] == USHER_SEG_DELIMITER ){
                     seg->type = USHER_SEG_NODE;
                 }
                 // set type as leaf-segment
