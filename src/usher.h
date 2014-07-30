@@ -56,6 +56,7 @@ typedef struct {
 usher_t *usher_alloc( void );
 void usher_dealloc( usher_t *u );
 int usher_add( usher_t *u, const char *path, void *val );
+int usher_get( usher_seg_t **seg, usher_t *u, const char *path );
 void usher_dump( usher_t *u );
 
 

@@ -49,6 +49,17 @@ int usher_add( usher_t *u, const char *path, void *val )
 }
 
 
+int usher_get( usher_seg_t **seg, usher_t *u, const char *path )
+{
+    // path should be valid absolute-path format.
+    if( path && *path && *path == USHER_SEG_DELIMITER ){
+        return seg_get( seg, u->root, (uint8_t*)path );
+    }
+    
+    return USHER_UNMATCH;
+}
+
+
 void usher_dump( usher_t *u )
 {
     if( u->root ){
