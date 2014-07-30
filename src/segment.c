@@ -151,6 +151,8 @@ int seg_split( usher_seg_t *seg, size_t pos, usher_seg_t *sibling )
         // create new children
         if( ( seg->children = prealloc( NULL, 2, usher_seg_t* ) ) )
         {
+            size_t i = 0;
+            
             seg->len -= branch->len;
             // TODO: should release unused memory
             seg->path[seg->len] = 0;
@@ -167,6 +169,11 @@ int seg_split( usher_seg_t *seg, size_t pos, usher_seg_t *sibling )
             }
             branch->parent = seg;
             sibling->parent = seg;
+            
+            // change children's parent
+            for(; i < branch->nchildren; i++ ){
+                branch->children[i]->parent = branch;
+            }
             
             return 0;
         }
