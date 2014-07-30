@@ -99,6 +99,7 @@ int seg_append2child( usher_seg_t *seg, usher_seg_t *child )
 {
     usher_seg_t **children = prealloc( seg->children, seg->nchildren + 1, usher_seg_t* );
     
+    // TODO: binary insertion sort implementation
     if( children ){
         children[seg->nchildren] = child;
         seg->children = children;
@@ -108,6 +109,31 @@ int seg_append2child( usher_seg_t *seg, usher_seg_t *child )
     }
     
     return -1;
+}
+
+
+// TODO: binary search implementation
+usher_seg_t *seg_getchild( usher_seg_t *seg, uint8_t k )
+{
+    usher_seg_t *child = NULL;
+    
+    // check children
+    if( seg->children )
+    {
+        size_t i = 0;
+        printf( "check children: %zu\n", seg->nchildren );
+        
+        for(; i < seg->nchildren; i++ )
+        {
+            printf( "child[%zu]: %d -- %d\n", i, *seg->children[i]->path, k );
+            if( *seg->children[i]->path == k ){
+                child = seg->children[i];
+                break;
+            }
+        }
+    }
+    
+    return child;
 }
 
 
@@ -127,8 +153,16 @@ int seg_split( usher_seg_t *seg, size_t pos, usher_seg_t *sibling )
             seg->path[seg->len] = 0;
             seg->nchildren = 2;
             seg->type = USHER_SEG_EDGE;
-            seg->children[0] = branch;
-            seg->children[1] = sibling;
+            // sort by first byte value
+            if( *branch->path < *sibling->path ){
+                seg->children[0] = branch;
+                seg->children[1] = sibling;
+            }
+            else {
+                seg->children[0] = sibling;
+                seg->children[1] = branch;
+            }
+            
             return 0;
         }
         
@@ -159,22 +193,11 @@ int seg_add( usher_seg_t *seg, uint8_t *path )
         if( !*m )
         {
             // check children
-            if( seg->children )
-            {
-                size_t i = 0;
-                printf( "check children: %zu\n", seg->nchildren );
-                
-                for(; i < seg->nchildren; i++ )
-                {
-                    child = seg->children[i];
-                    printf( "child[%zu]: %s -- %s\n", i, child->path, k );
-                    if( *child->path == *k ){
-                        seg = child;
-                        m = seg->path;
-                        printf( "check next\n" );
-                        goto CHECK_NEXT;
-                    }
-                }
+            if( ( child = seg_getchild( seg, *k ) ) ){
+                seg = child;
+                m = seg->path;
+                printf( "check next: %s, type %d\n", seg->path, seg->type );
+                goto CHECK_NEXT;
             }
             
             printf( "create children\n" );
