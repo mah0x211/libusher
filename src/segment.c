@@ -290,6 +290,10 @@ CHECK_NEXT:
     
     printf("found: %p\n", src );
     *seg = src;
+    // not end of string
+    if( *m ){
+        return USHER_MATCH_SUB;
+    }
     
     return USHER_MATCH;
 }
