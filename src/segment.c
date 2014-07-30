@@ -252,6 +252,48 @@ CHECK_NEXT:
 }
 
 
+int seg_get( usher_seg_t **seg, usher_seg_t *src, uint8_t *path )
+{
+    uint8_t *m = src->path;
+    uint8_t *k = path;
+    usher_seg_t *child = NULL;
+    
+    printf("search %s : %zu\n", path, strlen( (char*)path ) );
+    // parse path-string
+    while( *k )
+    {
+        printf( "k: %3d -> %s, %3d -> %s\n", *k, k, *m, m );
+        // reached to tail of segment
+        if( !*m )
+        {
+            // check children
+            if( ( child = seg_getchild( src, *k ) ) ){
+                src = child;
+                m = src->path;
+                printf( "check next: %s, type %d\n", src->path, src->type );
+                goto CHECK_NEXT;
+            }
+            
+            *seg = src;
+            return USHER_MATCH_SEG;
+        }
+        // different
+        else if( *m != *k ){
+            *seg = src;
+            return USHER_MATCH_SUB;
+        }
+        
+CHECK_NEXT:
+        k++;
+        m++;
+    }
+    
+    printf("found: %p\n", src );
+    *seg = src;
+    
+    return USHER_MATCH;
+}
+
 
 void seg_dump( usher_seg_t *seg, int lv )
 {
