@@ -64,6 +64,7 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev )
                     // allocate child-segment with remaining path
                     if( ( seg->children[0] = seg_alloc( ptr, prev ) ) ){
                         seg->nchildren = 1;
+                        seg->children[0]->parent = seg;
                         return seg;
                     }
                     pdealloc( seg->children );
@@ -72,6 +73,7 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev )
             }
             else
             {
+                seg->parent = NULL;
                 seg->children = NULL;
                 seg->nchildren = 0;
                 // set type as node-segment
@@ -104,6 +106,7 @@ int seg_append2child( usher_seg_t *seg, usher_seg_t *child )
         children[seg->nchildren] = child;
         seg->children = children;
         seg->nchildren++;
+        child->parent = seg;
         
         return 0;
     }
@@ -162,6 +165,8 @@ int seg_split( usher_seg_t *seg, size_t pos, usher_seg_t *sibling )
                 seg->children[0] = sibling;
                 seg->children[1] = branch;
             }
+            branch->parent = seg;
+            sibling->parent = seg;
             
             return 0;
         }
