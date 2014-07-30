@@ -222,7 +222,6 @@ int seg_add( usher_seg_t *seg, uint8_t *path )
             // cannot split variable segment
             if( seg->type & USHER_SEG_VAR ){
                 errno = EINVAL;
-                break;
             }
             // create child segment
             else if( ( child = seg_alloc( k, prev ) ) )
