@@ -31,6 +31,7 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev )
                 {
                     // set type as variable-segment
                     seg->type = USHER_SEG_VAR;
+                    ptr++;
                     while( *ptr )
                     {
                         if( *ptr == USHER_SEG_DELIMITER ){
