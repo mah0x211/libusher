@@ -21,7 +21,7 @@ static inline size_t bsearch_child_idx( usher_seg_t **children, size_t len,
         // find middle
         while( left < right )
         {
-            mid = left + ( ( right - left ) >> 1 );
+            mid = ( right + left ) >> 1;
             if( c > *children[mid]->path ){
                 left = mid + 1;
             }
