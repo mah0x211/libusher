@@ -204,7 +204,6 @@ int seg_split( usher_seg_t *seg, size_t pos, usher_seg_t *sibling )
         
         // revert
         seg->children = branch->children;
-        seg->nchildren = branch->nchildren;
         pdealloc( branch );
     }
     
