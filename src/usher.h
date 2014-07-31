@@ -25,7 +25,7 @@ typedef struct {
 } r2param_t;
 
 
-#define USHER_SEG_DELIMITER '/'
+#define USHER_DELIM_SEG '/'
 
 #define USHER_SEG_NODE  0x1
 #define USHER_SEG_LEAF  0x2

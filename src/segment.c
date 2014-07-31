@@ -24,7 +24,7 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev, uintptr_t udata )
         {
             printf( "check: %s\n", ptr );
             // found variable-delimiter
-            if( *ptr == '$' && prev == USHER_SEG_DELIMITER )
+            if( *ptr == '$' && prev == USHER_DELIM_SEG )
             {
                 // should try to find segment delimiter if ptr is same as path
                 if( ptr == path )
@@ -34,7 +34,7 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev, uintptr_t udata )
                     ptr++;
                     while( *ptr )
                     {
-                        if( *ptr == USHER_SEG_DELIMITER ){
+                        if( *ptr == USHER_DELIM_SEG ){
                             prev = *ptr;
                             break;
                         }
@@ -80,7 +80,7 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev, uintptr_t udata )
                 seg->udata = udata;
                 // set type as node-segment
                 // NOTE: variable-segment have no trailing-slash
-                if( seg->path[len-1] == USHER_SEG_DELIMITER ){
+                if( seg->path[len-1] == USHER_DELIM_SEG ){
                     seg->type = USHER_SEG_NODE|USHER_SEG_EOS;
                 }
                 // set type as leaf-segment
