@@ -150,17 +150,43 @@ void seg_dealloc( usher_seg_t *seg, usher_dealloc_cb callback )
 }
 
 
+
 // error: no-mem
 int seg_append2child( usher_seg_t *seg, usher_seg_t *child )
 {
     usher_seg_t **children = prealloc( seg->children, seg->nchildren + 1, usher_seg_t* );
     
-    // TODO: binary insertion sort implementation
-    if( children ){
-        children[seg->nchildren] = child;
+    if( children )
+    {
+        uint8_t c = *child->path;
+        
         seg->children = children;
         seg->nchildren++;
         child->parent = seg;
+        
+        if( seg->nchildren == 1 ){
+            children[0] = child;
+        }
+        else
+        {
+            size_t mid = binsearch_child_idx( children, seg->nchildren, c );
+            
+            if( seg->nchildren == 2 ){
+                children[1-mid] = children[0];
+                children[mid] = child;
+            }
+            else
+            {
+                size_t right = seg->nchildren - 1;
+                
+                // move to right
+                for(; right > mid; right-- ){
+                    children[right] = children[right-1];
+                }
+                // insert at middle position
+                children[right] = child;
+            }
+        }
         
         return 0;
     }
