@@ -427,6 +427,10 @@ int seg_remove( usher_seg_t *seg, uint8_t *path, usher_dealloc_cb callback )
                         seg->children = child->children;
                         seg->nchildren = child->nchildren;
                         seg->udata = child->udata;
+                        
+                        // remove child
+                        child->children = NULL;
+                        seg_dealloc( child, NULL );
                     }
                 }
                 else if( !( seg->type & USHER_SEG_EOS ) ){
