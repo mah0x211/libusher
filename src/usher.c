@@ -28,7 +28,7 @@ usher_t *usher_alloc( void )
 void usher_dealloc( usher_t *u )
 {
     if( u->root ){
-        pdealloc( u->root );
+        seg_dealloc( u->root );
     }
     pdealloc( u );
 }
