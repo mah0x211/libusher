@@ -9,14 +9,14 @@
 #include "usher_private.h"
 
 
-static inline size_t bsearch_child_idx( usher_seg_t **children, size_t len,
+static inline uint8_t bsearch_child_idx( usher_seg_t **children, uint8_t len,
                                         uint8_t c )
 {
     if( len > 2 )
     {
-        size_t left = 0;
-        size_t right = len - 1;
-        size_t mid = 0;
+        uint8_t left = 0;
+        uint8_t right = len - 1;
+        uint8_t mid = 0;
         
         // find middle
         while( left < right )
@@ -164,7 +164,7 @@ int seg_append2child( usher_seg_t *seg, usher_seg_t *child )
         }
         else
         {
-            size_t mid = bsearch_child_idx( children, seg->nchildren, c );
+            uint8_t mid = bsearch_child_idx( children, seg->nchildren, c );
             
             if( seg->nchildren == 2 ){
                 children[1-mid] = children[0];
@@ -172,7 +172,7 @@ int seg_append2child( usher_seg_t *seg, usher_seg_t *child )
             }
             else
             {
-                size_t right = seg->nchildren - 1;
+                uint8_t right = seg->nchildren - 1;
                 
                 // move to right
                 for(; right > mid; right-- ){
@@ -190,14 +190,14 @@ int seg_append2child( usher_seg_t *seg, usher_seg_t *child )
 }
 
 
-usher_seg_t *seg_getchild_idx( usher_seg_t *seg, uint8_t k, size_t *idx )
+usher_seg_t *seg_getchild_idx( usher_seg_t *seg, uint8_t k, uint8_t *idx )
 {
     usher_seg_t *child = NULL;
     
     // check children
     if( seg->children )
     {
-        size_t mid = bsearch_child_idx( seg->children, seg->nchildren, k );
+        uint8_t mid = bsearch_child_idx( seg->children, seg->nchildren, k );
         
         if( *seg->children[mid]->path == k )
         {
@@ -225,7 +225,7 @@ int seg_split( usher_seg_t *seg, size_t pos, usher_seg_t *sibling )
         // create new children
         if( ( seg->children = prealloc( NULL, 2, usher_seg_t* ) ) )
         {
-            size_t i = 0;
+            uint8_t i = 0;
             
             seg->len -= branch->len;
             // TODO: should release unused memory
@@ -384,7 +384,7 @@ int seg_remove( usher_seg_t *seg, uint8_t *path, usher_dealloc_cb callback )
         // reached to tail of segment
         if( !*m )
         {
-            size_t idx = 0;
+            uint8_t idx = 0;
             usher_seg_t *child = seg_getchild_idx( seg, *k, &idx );
             
             // remove children

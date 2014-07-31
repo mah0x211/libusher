@@ -43,14 +43,14 @@ enum {
 };
 
 typedef struct _usher_seg {
-    uint8_t type;
+    // userdata
+    uintptr_t udata;
     uint8_t *path;
     size_t len;
     struct _usher_seg *parent;
     struct _usher_seg **children;
-    size_t nchildren;
-    // userdata
-    uintptr_t udata;
+    uint8_t nchildren;
+    uint8_t type;
 } usher_seg_t;
 
 
