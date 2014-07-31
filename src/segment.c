@@ -49,11 +49,9 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev, uintptr_t udata )
         size_t len = 0;
         uint8_t *ptr = path;
         
-        printf( "alloc: %s\n", ptr );
         // check parametalized segment
         while( *ptr )
         {
-            printf( "check: %s\n", ptr );
             // found variable-delimiter
             if( *ptr == USHER_DELIM_VAR && prev == USHER_DELIM_SEG )
             {
@@ -84,7 +82,6 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev, uintptr_t udata )
             memcpy( seg->path, path, len );
             seg->path[len] = 0;
             seg->len = len;
-            printf( "path: %s, remain: %s\n", seg->path, ptr );
             
             // have children
             if( *ptr )
@@ -131,8 +128,6 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev, uintptr_t udata )
 
 void seg_dealloc( usher_seg_t *seg, usher_dealloc_cb callback )
 {
-    printf("dealloc: %s ----------------------------------\n", seg->path );
-    
     if( seg->children )
     {
         while( seg->nchildren ){
@@ -274,11 +269,9 @@ int seg_add( usher_seg_t *seg, uint8_t *path, uintptr_t udata )
     uint8_t prev = 0;
     usher_seg_t *child = NULL;
     
-    printf("append %s : %zu\n", path, strlen( (char*)path ) );
     // parse path-string
     while( *k )
     {
-        printf( "k: %3d -> %s, %3d -> %s\n", *k, k, *m, m );
         // reached to tail of segment
         if( !*m )
         {
@@ -286,11 +279,9 @@ int seg_add( usher_seg_t *seg, uint8_t *path, uintptr_t udata )
             if( ( child = seg_getchild( seg, *k ) ) ){
                 seg = child;
                 m = seg->path;
-                printf( "check next: %s, type %d\n", seg->path, seg->type );
                 goto CHECK_NEXT;
             }
             
-            printf( "create children\n" );
             // cannot append child to leaf-segment
             if( seg->type & USHER_SEG_LEAF ){
                 errno = EINVAL;
@@ -308,7 +299,6 @@ int seg_add( usher_seg_t *seg, uint8_t *path, uintptr_t udata )
         // different
         else if( *m != *k )
         {
-            printf("split: %s %zu, type %d\n", m, m - seg->path, seg->type );
             // cannot split variable segment
             if( seg->type & USHER_SEG_VAR ){
                 errno = EINVAL;
@@ -318,8 +308,6 @@ int seg_add( usher_seg_t *seg, uint8_t *path, uintptr_t udata )
             {
                 // split node and append child segment
                 if( seg_split( seg, (size_t)(m - seg->path), child ) == 0 ){
-                    printf("parent  %zd -> %s\n", seg->len, seg->path );
-                    printf("sibling %zd -> %s\n", child->len, child->path );
                     return 0;
                 }
                 pdealloc( child );
@@ -348,11 +336,9 @@ int seg_get( usher_seg_t **seg, usher_seg_t *src, uint8_t *path )
     uint8_t *k = path;
     usher_seg_t *child = NULL;
     
-    printf("search %s : %zu\n", path, strlen( (char*)path ) );
     // parse path-string
     while( *k )
     {
-        printf( "k: %3d -> %s, %3d -> %s\n", *k, k, *m, m );
         // reached to tail of segment
         if( !*m )
         {
@@ -360,7 +346,6 @@ int seg_get( usher_seg_t **seg, usher_seg_t *src, uint8_t *path )
             if( ( child = seg_getchild( src, *k ) ) ){
                 src = child;
                 m = src->path;
-                printf( "check next: %s, type %d\n", src->path, src->type );
                 goto CHECK_NEXT;
             }
             
@@ -378,7 +363,6 @@ CHECK_NEXT:
         m++;
     }
     
-    printf("found: %p\n", src );
     *seg = src;
     // not end of string
     if( *m ){
@@ -406,20 +390,17 @@ int seg_remove( usher_seg_t *seg, uint8_t *path, usher_dealloc_cb callback )
             // remove children
             if( child && seg_remove( child, k, callback ) == 0 )
             {
-                printf("%s -- nhildren: %zd/%zd\n", seg->path, idx, seg->nchildren );
                 seg->nchildren--;
                 if( seg->nchildren > 1 )
                 {
+                    // fill in blank
                     for(; idx < seg->nchildren; idx++ ){
-                        printf("swap: %zd <- %zd\n", idx, idx+1);
                         seg->children[idx] = seg->children[idx+1];
                     }
-                    printf("set null: %zd/%zd\n", idx, seg->nchildren );
                     seg->children[idx] = NULL;
                 }
                 else if( seg->nchildren == 1 )
                 {
-                    printf("swap[%zd]: %zd <- %zd\n", idx, 0, 1 - idx );
                     seg->children[0] = seg->children[1-idx];
                     seg->children[1] = NULL;
                     child = seg->children[0];
@@ -435,10 +416,8 @@ int seg_remove( usher_seg_t *seg, uint8_t *path, usher_dealloc_cb callback )
                         if( !newpath ){
                             return -1;
                         }
-                        printf("marge path: %s <- %s: ", seg->path, child->path );
                         memcpy( newpath + seg->len, child->path, child->len );
                         newpath[len] = 0;
-                        printf("%s\n", newpath );
                         // release existing children
                         pdealloc( seg->children );
                         
@@ -472,8 +451,7 @@ int seg_remove( usher_seg_t *seg, uint8_t *path, usher_dealloc_cb callback )
         return -1;
     }
     
-    printf("should remove this segment\n");
-    seg_dump( seg, 0 );
+    // dealloc target segment
     seg_dealloc( seg, callback );
     
     return 0;
