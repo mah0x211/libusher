@@ -330,6 +330,94 @@ CHECK_NEXT:
 }
 
 
+int seg_remove( usher_seg_t *seg, uint8_t *path )
+{
+    uint8_t *m = seg->path;
+    uint8_t *k = path;
+    
+    // parse path-string
+    while( *k )
+    {
+        // reached to tail of segment
+        if( !*m )
+        {
+            size_t idx = 0;
+            usher_seg_t *child = seg_getchild_idx( seg, *k, &idx );
+            
+            // remove children
+            if( child && seg_remove( child, k ) == 0 )
+            {
+                printf("%s -- nhildren: %zd/%zd\n", seg->path, idx, seg->nchildren );
+                seg->nchildren--;
+                if( seg->nchildren > 1 )
+                {
+                    for(; idx < seg->nchildren; idx++ ){
+                        printf("swap: %zd <- %zd\n", idx, idx+1);
+                        seg->children[idx] = seg->children[idx+1];
+                    }
+                    printf("set null: %zd/%zd\n", idx, seg->nchildren );
+                    seg->children[idx] = NULL;
+                }
+                else if( seg->nchildren == 1 )
+                {
+                    printf("swap[%zd]: %zd <- %zd\n", idx, 0, 1 - idx );
+                    seg->children[0] = seg->children[1-idx];
+                    seg->children[1] = NULL;
+                    child = seg->children[0];
+                    if( !( seg->type & USHER_SEG_EOS ) &&
+                        !( child->type & USHER_SEG_VAR ) )
+                    {
+                        size_t len = seg->len + child->len;
+                        uint8_t *newpath = prealloc( seg->path, len + 1, uint8_t );
+                        
+                        // no-mem
+                        if( !newpath ){
+                            return -1;
+                        }
+                        printf("marge path: %s <- %s: ", seg->path, child->path );
+                        memcpy( newpath + seg->len, child->path, child->len );
+                        newpath[len] = 0;
+                        printf("%s\n", newpath );
+                        // release existing children
+                        pdealloc( seg->children );
+                        
+                        seg->path = newpath;
+                        seg->len = len;
+                        seg->type = child->type;
+                        seg->children = child->children;
+                        seg->nchildren = child->nchildren;
+                    }
+                }
+                else if( !( seg->type & USHER_SEG_EOS ) ){
+                    seg_dealloc( seg );
+                    return 0;
+                }
+            }
+            
+            return -1;
+        }
+        // different
+        else if( *m != *k ){
+            return -1;
+        }
+        
+        k++;
+        m++;
+    }
+    
+    // not end of string or not end-of-segment
+    if( *m || !( seg->type & USHER_SEG_EOS ) ){
+        return -1;
+    }
+    
+    printf("should remove this segment\n");
+    seg_dump( seg, 0 );
+    seg_dealloc( seg );
+    
+    return 0;
+}
+
+
 void seg_dump( usher_seg_t *seg, int lv )
 {
     usher_seg_t *child;

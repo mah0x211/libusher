@@ -34,6 +34,7 @@ usher_seg_t *seg_getchild_idx( usher_seg_t *seg, uint8_t k, size_t *idx );
 int seg_split( usher_seg_t *node, size_t pos, usher_seg_t *sibling );
 int seg_add( usher_seg_t *node, uint8_t *path );
 int seg_get( usher_seg_t **seg, usher_seg_t *src, uint8_t *path );
+int seg_remove( usher_seg_t *seg, uint8_t *path );
 void seg_dump( usher_seg_t *node, int lv );
 
 
