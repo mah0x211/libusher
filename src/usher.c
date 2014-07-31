@@ -17,7 +17,7 @@ usher_t *usher_alloc( usher_dealloc_cb callback )
     if( u )
     {
         u->callback = callback;
-        if( !( u->root = seg_alloc( (uint8_t*)"/", 0 ) ) ){
+        if( !( u->root = seg_alloc( (uint8_t*)"/", 0, 0 ) ) ){
             u = pdealloc( u );
         }
     }
@@ -43,7 +43,7 @@ int usher_add( usher_t *u, const char *path, void *val )
         return -1;
     }
     else {
-        return seg_add( u->root, (uint8_t*)path );
+        return seg_add( u->root, (uint8_t*)path, (uintptr_t)val );
     }
     
     return -1;

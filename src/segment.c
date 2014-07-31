@@ -9,7 +9,7 @@
 #include "usher_private.h"
 
 
-usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev )
+usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev, uintptr_t udata )
 {
     usher_seg_t *seg = palloc( usher_seg_t );
     
@@ -63,7 +63,7 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev )
                 if( ( seg->children = pnalloc( 1, usher_seg_t* ) ) )
                 {
                     // allocate child-segment with remaining path
-                    if( ( seg->children[0] = seg_alloc( ptr, prev ) ) ){
+                    if( ( seg->children[0] = seg_alloc( ptr, prev, udata ) ) ){
                         seg->nchildren = 1;
                         seg->children[0]->parent = seg;
                         return seg;
@@ -77,6 +77,7 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev )
                 seg->parent = NULL;
                 seg->children = NULL;
                 seg->nchildren = 0;
+                seg->udata = udata;
                 // set type as node-segment
                 // NOTE: variable-segment have no trailing-slash
                 if( seg->path[len-1] == USHER_SEG_DELIMITER ){
@@ -165,13 +166,14 @@ usher_seg_t *seg_getchild_idx( usher_seg_t *seg, uint8_t k, size_t *idx )
 
 int seg_split( usher_seg_t *seg, size_t pos, usher_seg_t *sibling )
 {
-    usher_seg_t *branch = seg_alloc( seg->path + pos, *(seg->path + pos - 1) );
+    usher_seg_t *branch = seg_alloc( seg->path + pos, *(seg->path + pos - 1), 0 );
     
     if( branch )
     {
         branch->type = seg->type;
         branch->children = seg->children;
         branch->nchildren = seg->nchildren;
+        branch->udata = seg->udata;
         // create new children
         if( ( seg->children = prealloc( NULL, 2, usher_seg_t* ) ) )
         {
@@ -182,6 +184,7 @@ int seg_split( usher_seg_t *seg, size_t pos, usher_seg_t *sibling )
             seg->path[seg->len] = 0;
             seg->nchildren = 2;
             seg->type = USHER_SEG_EDGE;
+            seg->udata = 0;
             // sort by first byte value
             if( *branch->path < *sibling->path ){
                 seg->children[0] = branch;
@@ -211,8 +214,7 @@ int seg_split( usher_seg_t *seg, size_t pos, usher_seg_t *sibling )
 }
 
 
-
-int seg_add( usher_seg_t *seg, uint8_t *path )
+int seg_add( usher_seg_t *seg, uint8_t *path, uintptr_t udata )
 {
     uint8_t *m = seg->path;
     uint8_t *k = path;
@@ -241,7 +243,7 @@ int seg_add( usher_seg_t *seg, uint8_t *path )
                 errno = EINVAL;
             }
             // append child
-            else if( ( child = seg_alloc( k, prev ) ) )
+            else if( ( child = seg_alloc( k, prev, udata ) ) )
             {
                 if( seg_append2child( seg, child ) == 0 ){
                     return 0;
@@ -259,7 +261,7 @@ int seg_add( usher_seg_t *seg, uint8_t *path )
                 errno = EINVAL;
             }
             // create child segment
-            else if( ( child = seg_alloc( k, prev ) ) )
+            else if( ( child = seg_alloc( k, prev, udata ) ) )
             {
                 // split node and append child segment
                 if( seg_split( seg, (size_t)(m - seg->path), child ) == 0 ){
@@ -368,6 +370,8 @@ int seg_remove( usher_seg_t *seg, uint8_t *path, usher_dealloc_cb callback )
                     seg->children[0] = seg->children[1-idx];
                     seg->children[1] = NULL;
                     child = seg->children[0];
+                    
+                    // merge
                     if( !( seg->type & USHER_SEG_EOS ) &&
                         !( child->type & USHER_SEG_VAR ) )
                     {
@@ -390,6 +394,7 @@ int seg_remove( usher_seg_t *seg, uint8_t *path, usher_dealloc_cb callback )
                         seg->type = child->type;
                         seg->children = child->children;
                         seg->nchildren = child->nchildren;
+                        seg->udata = child->udata;
                     }
                 }
                 else if( !( seg->type & USHER_SEG_EOS ) ){
