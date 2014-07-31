@@ -53,7 +53,7 @@ typedef struct _usher_seg {
 } usher_seg_t;
 
 
-typedef void(*usher_dealloc_cb)( uintptr_t );
+typedef void(*usher_dealloc_cb)( void* );
 
 typedef struct {
     usher_seg_t *root;

@@ -110,7 +110,7 @@ void seg_dealloc( usher_seg_t *seg, usher_dealloc_cb callback )
     }
     // call user defined finalizer
     if( callback && seg->type & USHER_SEG_EOS ){
-        callback( seg->udata );
+        callback( (void*)seg->udata );
     }
     
     pdealloc( seg->path );
