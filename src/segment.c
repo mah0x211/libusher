@@ -195,24 +195,20 @@ int seg_append2child( usher_seg_t *seg, usher_seg_t *child )
 }
 
 
-// TODO: binary search implementation
 usher_seg_t *seg_getchild_idx( usher_seg_t *seg, uint8_t k, size_t *idx )
 {
-    size_t i = 0;
     usher_seg_t *child = NULL;
     
     // check children
     if( seg->children )
     {
-        for(; i < seg->nchildren; i++ )
+        size_t mid = bsearch_child_idx( seg->children, seg->nchildren, k );
+        
+        if( *seg->children[mid]->path == k )
         {
-            if( *seg->children[i]->path == k )
-            {
-                child = seg->children[i];
-                if( idx ){
-                    *idx = i;
-                }
-                break;
+            child = seg->children[mid];
+            if( idx ){
+                *idx = mid;
             }
         }
     }
