@@ -24,7 +24,7 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev, uintptr_t udata )
         {
             printf( "check: %s\n", ptr );
             // found variable-delimiter
-            if( *ptr == '$' && prev == USHER_DELIM_SEG )
+            if( *ptr == USHER_DELIM_VAR && prev == USHER_DELIM_SEG )
             {
                 // should try to find segment delimiter if ptr is same as path
                 if( ptr == path )
