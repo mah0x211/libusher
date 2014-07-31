@@ -9,8 +9,8 @@
 #include "usher_private.h"
 
 
-static inline size_t binsearch_child_idx( usher_seg_t **children, size_t len,
-                                          uint8_t c )
+static inline size_t bsearch_child_idx( usher_seg_t **children, size_t len,
+                                        uint8_t c )
 {
     if( len > 2 )
     {
@@ -169,7 +169,7 @@ int seg_append2child( usher_seg_t *seg, usher_seg_t *child )
         }
         else
         {
-            size_t mid = binsearch_child_idx( children, seg->nchildren, c );
+            size_t mid = bsearch_child_idx( children, seg->nchildren, c );
             
             if( seg->nchildren == 2 ){
                 children[1-mid] = children[0];
