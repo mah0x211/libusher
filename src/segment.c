@@ -95,14 +95,15 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev )
     return seg;
 }
 
-static void dealloc( usher_seg_t *seg )
+
+void seg_dealloc( usher_seg_t *seg )
 {
     printf("dealloc: %s ----------------------------------\n", seg->path );
     
     if( seg->children )
     {
         while( seg->nchildren ){
-            dealloc( seg->children[--seg->nchildren] );
+            seg_dealloc( seg->children[--seg->nchildren] );
         }
         pdealloc( seg->children );
     }
