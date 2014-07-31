@@ -60,6 +60,21 @@ int usher_get( usher_seg_t **seg, usher_t *u, const char *path )
 }
 
 
+int usher_remove( usher_t *u, const char *path )
+{
+    // path should be valid absolute-path format.
+    if( path && *path && *path == USHER_SEG_DELIMITER ){
+        printf("remove: %s\n", path );
+        seg_remove( u->root, (uint8_t*)path );
+        return 0;
+    }
+    else {
+        errno = EINVAL;
+    }
+    
+    return -1;
+}
+
 void usher_dump( usher_t *u )
 {
     if( u->root ){
