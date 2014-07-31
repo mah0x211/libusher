@@ -147,6 +147,7 @@ int seg_split( usher_seg_t *seg, size_t pos, usher_seg_t *sibling )
     
     if( branch )
     {
+        branch->type = seg->type;
         branch->children = seg->children;
         branch->nchildren = seg->nchildren;
         // create new children
