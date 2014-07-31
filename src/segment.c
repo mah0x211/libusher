@@ -9,6 +9,37 @@
 #include "usher_private.h"
 
 
+static inline size_t binsearch_child_idx( usher_seg_t **children, size_t len,
+                                          uint8_t c )
+{
+    if( len > 2 )
+    {
+        size_t left = 0;
+        size_t right = len - 1;
+        size_t mid = 0;
+        
+        // find middle
+        while( left < right )
+        {
+            mid = left + ( ( right - left ) >> 1 );
+            if( c > *children[mid]->path ){
+                left = ++mid;
+            }
+            else {
+                right = mid;
+            }
+        }
+        
+        return mid;
+    }
+    else if( len == 2 && c > *children[0]->path ){
+        return 1;
+    }
+    
+    return 0;
+}
+
+
 usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev, uintptr_t udata )
 {
     usher_seg_t *seg = palloc( usher_seg_t );
