@@ -97,17 +97,22 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev )
 }
 
 
-void seg_dealloc( usher_seg_t *seg )
+void seg_dealloc( usher_seg_t *seg, usher_dealloc_cb callback )
 {
     printf("dealloc: %s ----------------------------------\n", seg->path );
     
     if( seg->children )
     {
         while( seg->nchildren ){
-            seg_dealloc( seg->children[--seg->nchildren] );
+            seg_dealloc( seg->children[--seg->nchildren], callback );
         }
         pdealloc( seg->children );
     }
+    // call user defined finalizer
+    if( callback && seg->type & USHER_SEG_EOS ){
+        callback( seg->udata );
+    }
+    
     pdealloc( seg->path );
     pdealloc( seg );
 }
@@ -330,7 +335,7 @@ CHECK_NEXT:
 }
 
 
-int seg_remove( usher_seg_t *seg, uint8_t *path )
+int seg_remove( usher_seg_t *seg, uint8_t *path, usher_dealloc_cb callback )
 {
     uint8_t *m = seg->path;
     uint8_t *k = path;
@@ -345,7 +350,7 @@ int seg_remove( usher_seg_t *seg, uint8_t *path )
             usher_seg_t *child = seg_getchild_idx( seg, *k, &idx );
             
             // remove children
-            if( child && seg_remove( child, k ) == 0 )
+            if( child && seg_remove( child, k, callback ) == 0 )
             {
                 printf("%s -- nhildren: %zd/%zd\n", seg->path, idx, seg->nchildren );
                 seg->nchildren--;
@@ -389,7 +394,7 @@ int seg_remove( usher_seg_t *seg, uint8_t *path )
                     }
                 }
                 else if( !( seg->type & USHER_SEG_EOS ) ){
-                    seg_dealloc( seg );
+                    seg_dealloc( seg, callback );
                     return 0;
                 }
             }
@@ -412,7 +417,7 @@ int seg_remove( usher_seg_t *seg, uint8_t *path )
     
     printf("should remove this segment\n");
     seg_dump( seg, 0 );
-    seg_dealloc( seg );
+    seg_dealloc( seg, callback );
     
     return 0;
 }

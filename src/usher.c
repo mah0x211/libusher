@@ -10,12 +10,13 @@
 #include <limits.h>
 
 
-usher_t *usher_alloc( void )
+usher_t *usher_alloc( usher_dealloc_cb callback )
 {
     usher_t *u = pcalloc( usher_t );
     
     if( u )
     {
+        u->callback = callback;
         if( !( u->root = seg_alloc( (uint8_t*)"/", 0 ) ) ){
             u = pdealloc( u );
         }
@@ -28,7 +29,7 @@ usher_t *usher_alloc( void )
 void usher_dealloc( usher_t *u )
 {
     if( u->root ){
-        seg_dealloc( u->root );
+        seg_dealloc( u->root, u->callback );
     }
     pdealloc( u );
 }
@@ -65,7 +66,7 @@ int usher_remove( usher_t *u, const char *path )
     // path should be valid absolute-path format.
     if( path && *path && *path == USHER_SEG_DELIMITER ){
         printf("remove: %s\n", path );
-        seg_remove( u->root, (uint8_t*)path );
+        seg_remove( u->root, (uint8_t*)path, u->callback );
         return 0;
     }
     else {
