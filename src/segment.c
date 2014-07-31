@@ -79,11 +79,11 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev )
                 // set type as node-segment
                 // NOTE: variable-segment have no trailing-slash
                 if( seg->path[len-1] == USHER_SEG_DELIMITER ){
-                    seg->type = USHER_SEG_NODE;
+                    seg->type = USHER_SEG_NODE|USHER_SEG_EOS;
                 }
                 // set type as leaf-segment
                 else {
-                    seg->type |= USHER_SEG_LEAF;
+                    seg->type |= USHER_SEG_LEAF|USHER_SEG_EOS;
                 }
                 
                 return seg;

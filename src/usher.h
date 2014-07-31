@@ -31,6 +31,8 @@ typedef struct {
 #define USHER_SEG_LEAF  0x2
 #define USHER_SEG_EDGE  0x4
 #define USHER_SEG_VAR   0x8
+// end-of-segment
+#define USHER_SEG_EOS   0x10
 
 enum {
     USHER_UNMATCH = 0,
