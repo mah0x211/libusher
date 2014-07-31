@@ -410,18 +410,18 @@ int seg_remove( usher_seg_t *seg, uint8_t *path, usher_dealloc_cb callback )
                         !( child->type & USHER_SEG_VAR ) )
                     {
                         size_t len = seg->len + child->len;
-                        uint8_t *newpath = prealloc( seg->path, len + 1, uint8_t );
                         
+                        path = prealloc( seg->path, len + 1, uint8_t );
                         // no-mem
-                        if( !newpath ){
+                        if( !path ){
                             return -1;
                         }
-                        memcpy( newpath + seg->len, child->path, child->len );
-                        newpath[len] = 0;
+                        memcpy( path + seg->len, child->path, child->len );
+                        path[len] = 0;
                         // release existing children
                         pdealloc( seg->children );
                         
-                        seg->path = newpath;
+                        seg->path = path;
                         seg->len = len;
                         seg->type = child->type;
                         seg->children = child->children;
