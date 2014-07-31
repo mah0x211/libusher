@@ -116,21 +116,22 @@ int seg_append2child( usher_seg_t *seg, usher_seg_t *child )
 
 
 // TODO: binary search implementation
-usher_seg_t *seg_getchild( usher_seg_t *seg, uint8_t k )
+usher_seg_t *seg_getchild_idx( usher_seg_t *seg, uint8_t k, size_t *idx )
 {
+    size_t i = 0;
     usher_seg_t *child = NULL;
     
     // check children
     if( seg->children )
     {
-        size_t i = 0;
-        printf( "check children: %zu\n", seg->nchildren );
-        
         for(; i < seg->nchildren; i++ )
         {
-            printf( "child[%zu]: %d -- %d\n", i, *seg->children[i]->path, k );
-            if( *seg->children[i]->path == k ){
+            if( *seg->children[i]->path == k )
+            {
                 child = seg->children[i];
+                if( idx ){
+                    *idx = i;
+                }
                 break;
             }
         }

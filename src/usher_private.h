@@ -26,7 +26,9 @@
 // segment
 usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev );
 int seg_append2child( usher_seg_t *node, usher_seg_t *child );
-usher_seg_t *seg_getchild( usher_seg_t *seg, uint8_t k );
+usher_seg_t *seg_getchild_idx( usher_seg_t *seg, uint8_t k, size_t *idx );
+#define seg_getchild(seg,k) seg_getchild_idx(seg,k,NULL)
+
 int seg_split( usher_seg_t *node, size_t pos, usher_seg_t *sibling );
 int seg_add( usher_seg_t *node, uint8_t *path );
 int seg_get( usher_seg_t **seg, usher_seg_t *src, uint8_t *path );
