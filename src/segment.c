@@ -23,14 +23,14 @@ static inline size_t bsearch_child_idx( usher_seg_t **children, size_t len,
         {
             mid = left + ( ( right - left ) >> 1 );
             if( c > *children[mid]->path ){
-                left = ++mid;
+                left = mid + 1;
             }
             else {
                 right = mid;
             }
         }
         
-        return mid;
+        return left;
     }
     else if( len == 2 && c > *children[0]->path ){
         return 1;
