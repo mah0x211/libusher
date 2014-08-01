@@ -207,7 +207,7 @@ usher_seg_t *seg_getchild_idx( usher_seg_t *seg, uint8_t k, uint8_t *idx )
 }
 
 
-int seg_split( usher_seg_t *seg, size_t pos, usher_seg_t *sibling )
+static inline int branchoff( usher_seg_t *seg, size_t pos, usher_seg_t *sibling )
 {
     usher_seg_t *branch = seg_alloc( seg->path + pos, *(seg->path + pos - 1), 0 );
     
@@ -303,7 +303,7 @@ usher_error_t seg_add( usher_seg_t *seg, uint8_t *path, uintptr_t udata )
             else if( ( child = seg_alloc( k, prev, udata ) ) )
             {
                 // split node and append child segment
-                if( seg_split( seg, (size_t)(m - seg->path), child ) == 0 ){
+                if( branchoff( seg, (size_t)(m - seg->path), child ) == 0 ){
                     return 0;
                 }
                 pdealloc( child );

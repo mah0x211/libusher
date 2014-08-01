@@ -30,7 +30,6 @@ void seg_dealloc( usher_seg_t *seg, usher_dealloc_cb callback );
 usher_seg_t *seg_getchild_idx( usher_seg_t *seg, uint8_t k, uint8_t *idx );
 #define seg_getchild(seg,k) seg_getchild_idx(seg,k,NULL)
 
-int seg_split( usher_seg_t *node, size_t pos, usher_seg_t *sibling );
 usher_error_t seg_add( usher_seg_t *node, uint8_t *path, uintptr_t udata );
 int seg_get( usher_seg_t **seg, usher_seg_t *src, uint8_t *path );
 int seg_remove( usher_seg_t *seg, uint8_t *path, usher_dealloc_cb callback );
