@@ -142,9 +142,7 @@ void seg_dealloc( usher_seg_t *seg, usher_dealloc_cb callback )
 }
 
 
-
-// error: no-mem
-int seg_append2child( usher_seg_t *seg, usher_seg_t *child )
+static inline int append2child( usher_seg_t *seg, usher_seg_t *child )
 {
     usher_seg_t **children = prealloc( seg->children, seg->nchildren + 1, usher_seg_t* );
     
@@ -286,7 +284,7 @@ usher_error_t seg_add( usher_seg_t *seg, uint8_t *path, uintptr_t udata )
             // append child
             else if( ( child = seg_alloc( k, prev, udata ) ) )
             {
-                if( seg_append2child( seg, child ) == 0 ){
+                if( append2child( seg, child ) == 0 ){
                     return 0;
                 }
                 pdealloc( child );
