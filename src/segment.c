@@ -10,7 +10,7 @@
 
 
 static inline uint8_t bsearch_child_idx( usher_seg_t **children, uint8_t len,
-                                        uint8_t c )
+                                         uint8_t c )
 {
     if( len > 2 )
     {
@@ -42,7 +42,7 @@ static inline uint8_t bsearch_child_idx( usher_seg_t **children, uint8_t len,
 
 usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev, uintptr_t udata )
 {
-    usher_seg_t *seg = palloc( usher_seg_t );
+    usher_seg_t *seg = pcalloc( usher_seg_t );
     
     if( seg )
     {
@@ -102,9 +102,6 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev, uintptr_t udata )
             }
             else
             {
-                seg->parent = NULL;
-                seg->children = NULL;
-                seg->nchildren = 0;
                 seg->udata = udata;
                 // set type as node-segment
                 // NOTE: variable-segment have no trailing-slash
