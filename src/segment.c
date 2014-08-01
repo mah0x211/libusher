@@ -439,6 +439,10 @@ int seg_remove( usher_seg_t *seg, uint8_t *path, usher_dealloc_cb callback )
                     seg_dealloc( seg, callback );
                     return 0;
                 }
+                // deallocate unused children
+                else {
+                    seg->children = pdealloc( seg->children );
+                }
             }
             
             return -1;
