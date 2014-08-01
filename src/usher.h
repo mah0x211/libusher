@@ -25,6 +25,18 @@ typedef struct {
 } r2param_t;
 
 
+// errors
+typedef enum {
+    USHER_OK = 0,
+    USHER_EINVAL,
+    USHER_ENOMEM,
+    USHER_EAPPEND,
+    USHER_ESPLIT,
+    USHER_EALREADY
+} usher_error_t;
+
+
+
 #define USHER_DELIM_SEG '/'
 #define USHER_DELIM_VAR '$'
 
@@ -34,6 +46,7 @@ typedef struct {
 #define USHER_SEG_VAR   0x8
 // end-of-segment
 #define USHER_SEG_EOS   0x10
+
 
 enum {
     USHER_UNMATCH = 0,
@@ -64,7 +77,7 @@ typedef struct {
 
 usher_t *usher_alloc( usher_dealloc_cb callback );
 void usher_dealloc( usher_t *u );
-int usher_add( usher_t *u, const char *path, void *val );
+usher_error_t usher_add( usher_t *u, const char *path, void *val );
 int usher_get( usher_seg_t **seg, usher_t *u, const char *path );
 int usher_remove( usher_t *u, const char *path );
 

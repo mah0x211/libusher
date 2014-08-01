@@ -259,7 +259,7 @@ int seg_split( usher_seg_t *seg, size_t pos, usher_seg_t *sibling )
 }
 
 
-int seg_add( usher_seg_t *seg, uint8_t *path, uintptr_t udata )
+usher_error_t seg_add( usher_seg_t *seg, uint8_t *path, uintptr_t udata )
 {
     uint8_t *m = seg->path;
     uint8_t *k = path;
@@ -281,7 +281,7 @@ int seg_add( usher_seg_t *seg, uint8_t *path, uintptr_t udata )
             
             // cannot append child to leaf-segment
             if( seg->type & USHER_SEG_LEAF ){
-                errno = EINVAL;
+                return USHER_EAPPEND;
             }
             // append child
             else if( ( child = seg_alloc( k, prev, udata ) ) )
@@ -291,14 +291,15 @@ int seg_add( usher_seg_t *seg, uint8_t *path, uintptr_t udata )
                 }
                 pdealloc( child );
             }
-            break;
+            
+            return USHER_ENOMEM;
         }
         // different
         else if( *m != *k )
         {
             // cannot split variable segment
             if( seg->type & USHER_SEG_VAR ){
-                errno = EINVAL;
+                return USHER_ESPLIT;
             }
             // create child segment
             else if( ( child = seg_alloc( k, prev, udata ) ) )
@@ -309,7 +310,7 @@ int seg_add( usher_seg_t *seg, uint8_t *path, uintptr_t udata )
                 }
                 pdealloc( child );
             }
-            break;
+            return USHER_ENOMEM;
         }
         
 CHECK_NEXT:
@@ -319,11 +320,7 @@ CHECK_NEXT:
     }
     
     // already registered
-    if( !*k ){
-        errno = EALREADY;
-    }
-    
-    return -1;
+    return USHER_EALREADY;
 }
 
 

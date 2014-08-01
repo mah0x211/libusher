@@ -35,7 +35,7 @@ void usher_dealloc( usher_t *u )
 }
 
 
-int usher_add( usher_t *u, const char *path, void *val )
+usher_error_t usher_add( usher_t *u, const char *path, void *val )
 {
     // error: path-string is null or not valid absolute-path format.
     if( !path || !*path || *path != USHER_DELIM_SEG ){
@@ -46,7 +46,7 @@ int usher_add( usher_t *u, const char *path, void *val )
         return seg_add( u->root, (uint8_t*)path, (uintptr_t)val );
     }
     
-    return -1;
+    return USHER_EINVAL;
 }
 
 
