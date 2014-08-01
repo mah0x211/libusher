@@ -259,9 +259,51 @@ static inline int segment2edge( usher_seg_t *seg, size_t pos, usher_seg_t *sibli
         pdealloc( branch );
     }
     
+    // no-mem
     return -1;
 }
 
+static inline int branchoff( usher_seg_t *seg, size_t pos, uintptr_t udata )
+{
+    //size_t len = seg->path m - seg->path;
+    uint8_t *path = pnalloc( pos + 1, uint8_t );
+    
+    if( path )
+    {
+        usher_seg_t *parent = NULL;
+        
+        memcpy( path, seg->path, pos );
+        path[pos] = 0;
+        
+        // allocate new segment
+        if( ( parent = seg_alloc( path, 0, udata ) ) )
+        {
+            pdealloc( path );
+            parent->parent = seg->parent;
+            if( append2child( parent, seg ) == 0 )
+            {
+                // update parent children
+                uint8_t idx = bsearch_child_idx( parent->parent->children,
+                                                 parent->parent->nchildren,
+                                                 *parent->path );
+                
+                parent->parent->children[idx] = parent;
+                // erase parent path string
+                seg->len -= pos;
+                memmove( seg->path, seg->path + pos, seg->len );
+                seg->path[seg->len] = 0;
+                
+                return 0;
+            }
+            seg_dealloc( parent, NULL );
+        }
+        else {
+            pdealloc( path );
+        }
+    }
+
+    return -1;
+}
 
 usher_error_t seg_add( usher_seg_t *seg, uint8_t *path, uintptr_t udata )
 {
