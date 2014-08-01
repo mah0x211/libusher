@@ -365,8 +365,32 @@ CHECK_NEXT:
         m++;
     }
     
+    // not end of string
+    if( *m )
+    {
+        // cannot split variable segment / cannot change to leaf
+        if( seg->type & USHER_SEG_VAR || prev != '/' ){
+            return USHER_ESPLIT;
+        }
+        else if( branchoff( seg, m - seg->path, udata ) != 0 ){
+            return USHER_ENOMEM;
+        }
+    }
     // already registered
-    return USHER_EALREADY;
+    else if( seg->type & USHER_SEG_EOS ){
+        return USHER_EALREADY;
+    }
+    // edge cannot change to leaf
+    else if( prev != '/' ){
+        return USHER_EAPPEND;
+    }
+    // change to node
+    else {
+        seg->type = USHER_SEG_NODE|USHER_SEG_EOS;
+        seg->udata = udata;
+    }
+    
+    return USHER_OK;
 }
 
 
