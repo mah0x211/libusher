@@ -425,6 +425,11 @@ int seg_remove( usher_seg_t *seg, uint8_t *path, usher_dealloc_cb callback )
                         seg->nchildren = child->nchildren;
                         seg->udata = child->udata;
                         
+                        // change children's parent
+                        for( idx = 0; idx < seg->nchildren; idx++ ){
+                            seg->children[idx]->parent = seg;
+                        }
+                        
                         // remove child
                         child->children = NULL;
                         seg_dealloc( child, NULL );
