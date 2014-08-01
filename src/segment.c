@@ -91,13 +91,19 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev, uintptr_t udata )
                 if( ( seg->children = pnalloc( 1, usher_seg_t* ) ) )
                 {
                     // allocate child-segment with remaining path
-                    if( ( seg->children[0] = seg_alloc( ptr, prev, udata ) ) ){
+                    usher_seg_t *child = seg_alloc( ptr, prev, udata );
+                    
+                    if( child )
+                    {
                         seg->nchildren = 1;
-                        seg->children[0]->parent = seg;
+                        seg->children[0] = child;
+                        child->parent = seg;
                         return seg;
                     }
+                    // no-mem
                     pdealloc( seg->children );
                 }
+                // no-mem
                 pdealloc( seg->path );
             }
             else
