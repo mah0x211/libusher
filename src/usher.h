@@ -49,14 +49,6 @@ char *usher_strerror( usher_error_t err );
 #define USHER_SEG_EOS   0x4
 
 
-enum {
-    USHER_UNMATCH = 0,
-    USHER_MATCH,
-    USHER_MATCH_SHORT,
-    USHER_MATCH_LONG,
-    USHER_MATCH_DIFF
-};
-
 typedef struct _usher_seg {
     // userdata
     uintptr_t udata;
@@ -81,6 +73,15 @@ usher_t *usher_alloc( usher_dealloc_cb callback );
 void usher_dealloc( usher_t *u );
 usher_error_t usher_add( usher_t *u, const char *path, void *val );
 
+
+typedef enum {
+    USHER_UNMATCH = 0,
+    USHER_MATCH,
+    USHER_MATCH_SHORT,
+    USHER_MATCH_LONG,
+    USHER_MATCH_DIFF
+} usher_match_t;
+
 typedef struct {
     usher_seg_t *seg;
     uint8_t *cur;
@@ -88,7 +89,7 @@ typedef struct {
     uint8_t idx;
 } usher_state_t;
 
-int usher_get( usher_t *u, const char *path, usher_state_t *state );
+usher_match_t usher_get( usher_t *u, const char *path, usher_state_t *state );
 
 int usher_remove( usher_t *u, const char *path );
 

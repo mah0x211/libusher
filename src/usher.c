@@ -71,7 +71,7 @@ usher_error_t usher_add( usher_t *u, const char *path, void *val )
 }
 
 
-int usher_get( usher_t *u, const char *path, usher_state_t *state )
+usher_match_t usher_get( usher_t *u, const char *path, usher_state_t *state )
 {
     // path should be valid absolute-path format.
     if( path && *path && *path == USHER_DELIM_SEG ){

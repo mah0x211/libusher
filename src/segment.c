@@ -385,7 +385,7 @@ usher_error_t seg_add( usher_seg_t *seg, uint8_t *path, uintptr_t udata )
 }
 
 
-int seg_get( usher_seg_t *seg, uint8_t *path, usher_state_t *state )
+usher_match_t seg_get( usher_seg_t *seg, uint8_t *path, usher_state_t *state )
 {
     int rc = USHER_MATCH;
     uint8_t *m = seg->path;
