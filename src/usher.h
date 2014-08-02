@@ -75,8 +75,8 @@ usher_error_t usher_add( usher_t *u, const char *path, void *val );
 
 
 typedef enum {
-    USHER_UNMATCH = 0,
-    USHER_MATCH,
+    USHER_MATCH = 0,
+    USHER_MATCH_NONE,
     USHER_MATCH_SHORT,
     USHER_MATCH_LONG,
     USHER_MATCH_DIFF

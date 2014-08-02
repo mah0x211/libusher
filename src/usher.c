@@ -78,7 +78,7 @@ usher_match_t usher_get( usher_t *u, const char *path, usher_state_t *state )
         return seg_get( u->root, (uint8_t*)path, state );
     }
     
-    return USHER_UNMATCH;
+    return USHER_MATCH_NONE;
 }
 
 
