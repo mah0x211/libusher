@@ -50,11 +50,11 @@ usher_error_t usher_add( usher_t *u, const char *path, void *val )
 }
 
 
-int usher_get( usher_seg_t **seg, usher_t *u, const char *path )
+int usher_get( usher_t *u, const char *path, usher_state_t *state )
 {
     // path should be valid absolute-path format.
     if( path && *path && *path == USHER_DELIM_SEG ){
-        return seg_get( seg, u->root, (uint8_t*)path );
+        return seg_get( u->root, (uint8_t*)path, state );
     }
     
     return USHER_UNMATCH;

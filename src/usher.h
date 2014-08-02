@@ -77,7 +77,15 @@ typedef struct {
 usher_t *usher_alloc( usher_dealloc_cb callback );
 void usher_dealloc( usher_t *u );
 usher_error_t usher_add( usher_t *u, const char *path, void *val );
-int usher_get( usher_seg_t **seg, usher_t *u, const char *path );
+
+typedef struct {
+    usher_seg_t *seg;
+    uint8_t *cur;
+    uint8_t *remain;
+} usher_state_t;
+
+int usher_get( usher_t *u, const char *path, usher_state_t *state );
+
 int usher_remove( usher_t *u, const char *path );
 
 void usher_dump( usher_t *u );

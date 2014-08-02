@@ -393,9 +393,10 @@ CHECK_NEXT:
 }
 
 
-int seg_get( usher_seg_t **seg, usher_seg_t *src, uint8_t *path )
+int seg_get( usher_seg_t *seg, uint8_t *path, usher_state_t *state )
 {
-    uint8_t *m = src->path;
+    int rc = USHER_MATCH;
+    uint8_t *m = seg->path;
     uint8_t *k = path;
     usher_seg_t *child = NULL;
     
@@ -406,19 +407,19 @@ int seg_get( usher_seg_t **seg, usher_seg_t *src, uint8_t *path )
         if( !*m )
         {
             // check children
-            if( ( child = seg_getchild( src, *k ) ) ){
-                src = child;
-                m = src->path;
+            if( ( child = seg_getchild( seg, *k ) ) ){
+                seg = child;
+                m = seg->path;
                 goto CHECK_NEXT;
             }
             
-            *seg = src;
-            return USHER_MATCH_SEG;
+            rc = USHER_MATCH_SEG;
+            goto RET_RESULT;
         }
         // different
         else if( *m != *k ){
-            *seg = src;
-            return USHER_MATCH_SUB;
+            rc = USHER_MATCH_SUB;
+            goto RET_RESULT;
         }
         
 CHECK_NEXT:
@@ -426,13 +427,19 @@ CHECK_NEXT:
         m++;
     }
     
-    *seg = src;
     // not end of string
     if( *m ){
-        return USHER_MATCH_SUB;
+        rc = USHER_MATCH_SUB;
     }
+
+RET_RESULT:
+    *state = (usher_state_t){
+        .seg = seg,
+        .cur = m,
+        .remain = k
+    };
     
-    return USHER_MATCH;
+    return rc;
 }
 
 
