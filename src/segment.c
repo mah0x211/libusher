@@ -86,8 +86,6 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev, uintptr_t udata )
             // have children
             if( *ptr )
             {
-                // set type as node-segment
-                seg->type |= USHER_SEG_NODE;
                 if( ( seg->children = pnalloc( 1, usher_seg_t* ) ) )
                 {
                     // allocate child-segment with remaining path
@@ -112,7 +110,7 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev, uintptr_t udata )
                 // set type as node-segment
                 // NOTE: variable-segment have no trailing-slash
                 if( seg->path[len-1] == USHER_DELIM_SEG ){
-                    seg->type = USHER_SEG_NODE|USHER_SEG_EOS;
+                    seg->type = USHER_SEG_EOS;
                 }
                 // set type as leaf-segment
                 else {
@@ -187,6 +185,7 @@ static inline int append2child( usher_seg_t *seg, usher_seg_t *child )
         return 0;
     }
     
+    // no-mem
     return -1;
 }
 
@@ -232,7 +231,7 @@ static inline int segment2edge( usher_seg_t *seg, size_t pos, usher_seg_t *sibli
             // TODO: should release unused memory
             seg->path[seg->len] = 0;
             seg->nchildren = 2;
-            seg->type = USHER_SEG_EDGE;
+            seg->type = USHER_SEG_NODE;
             seg->udata = 0;
             // sort by first byte value
             if( *branch->path < *sibling->path ){
@@ -380,13 +379,13 @@ CHECK_NEXT:
     else if( seg->type & USHER_SEG_EOS ){
         return USHER_EALREADY;
     }
-    // edge cannot change to leaf
+    // cannot change to leaf
     else if( prev != '/' ){
         return USHER_EAPPEND;
     }
     // change to node
     else {
-        seg->type = USHER_SEG_NODE|USHER_SEG_EOS;
+        seg->type = USHER_SEG_EOS;
         seg->udata = udata;
     }
     

@@ -40,12 +40,11 @@ typedef enum {
 #define USHER_DELIM_SEG '/'
 #define USHER_DELIM_VAR '$'
 
-#define USHER_SEG_NODE  0x1
-#define USHER_SEG_LEAF  0x2
-#define USHER_SEG_EDGE  0x4
-#define USHER_SEG_VAR   0x8
+#define USHER_SEG_NODE  0x0
+#define USHER_SEG_LEAF  0x1
+#define USHER_SEG_VAR   0x2
 // end-of-segment
-#define USHER_SEG_EOS   0x10
+#define USHER_SEG_EOS   0x4
 
 
 enum {
