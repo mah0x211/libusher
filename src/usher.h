@@ -35,6 +35,8 @@ typedef enum {
     USHER_EALREADY
 } usher_error_t;
 
+char *usher_strerror( usher_error_t err );
+
 
 
 #define USHER_DELIM_SEG '/'

@@ -10,6 +10,27 @@
 #include <limits.h>
 
 
+char *usher_strerror( usher_error_t err )
+{
+    switch( err ){
+        case USHER_OK:
+            return "no error";
+        case USHER_EINVAL:
+            return "invalid argument";
+        case USHER_ENOMEM:
+            return "could not allocate memory";
+        case USHER_EAPPEND:
+            return "cannot append segment to leaf-segment";
+        case USHER_ESPLIT:
+            return "cannot split variable/leaf segment";
+        case USHER_EALREADY:
+            return "segment already defined";
+    }
+    
+    return "unknown error";
+}
+
+
 usher_t *usher_alloc( usher_dealloc_cb callback )
 {
     usher_t *u = pcalloc( usher_t );
