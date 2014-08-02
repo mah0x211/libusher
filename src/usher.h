@@ -50,8 +50,9 @@ typedef enum {
 enum {
     USHER_UNMATCH = 0,
     USHER_MATCH,
-    USHER_MATCH_SUB,
-    USHER_MATCH_SEG
+    USHER_MATCH_SHORT,
+    USHER_MATCH_LONG,
+    USHER_MATCH_DIFF
 };
 
 typedef struct _usher_seg {
@@ -82,6 +83,7 @@ typedef struct {
     usher_seg_t *seg;
     uint8_t *cur;
     uint8_t *remain;
+    uint8_t idx;
 } usher_state_t;
 
 int usher_get( usher_t *u, const char *path, usher_state_t *state );

@@ -399,6 +399,7 @@ int seg_get( usher_seg_t *seg, uint8_t *path, usher_state_t *state )
     uint8_t *m = seg->path;
     uint8_t *k = path;
     usher_seg_t *child = NULL;
+    uint8_t idx = 0;
     
     // parse path-string
     while( *k )
@@ -407,18 +408,19 @@ int seg_get( usher_seg_t *seg, uint8_t *path, usher_state_t *state )
         if( !*m )
         {
             // check children
-            if( ( child = seg_getchild( seg, *k ) ) ){
+            if( ( child = seg_getchild_idx( seg, *k, &idx ) ) ){
                 seg = child;
                 m = seg->path;
                 goto CHECK_NEXT;
             }
             
-            rc = USHER_MATCH_SEG;
+            // path is too long
+            rc = USHER_MATCH_LONG;
             goto RET_RESULT;
         }
         // different
         else if( *m != *k ){
-            rc = USHER_MATCH_SUB;
+            rc = USHER_MATCH_DIFF;
             goto RET_RESULT;
         }
         
@@ -427,16 +429,18 @@ CHECK_NEXT:
         m++;
     }
     
+    // path is too short
     // not end of string
     if( *m ){
-        rc = USHER_MATCH_SUB;
+        rc = USHER_MATCH_SHORT;
     }
 
 RET_RESULT:
     *state = (usher_state_t){
         .seg = seg,
         .cur = m,
-        .remain = k
+        .remain = k,
+        .idx = idx
     };
     
     return rc;
