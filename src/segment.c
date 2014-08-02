@@ -304,79 +304,71 @@ static inline int branchoff( usher_seg_t *seg, size_t pos, uintptr_t udata )
     return -1;
 }
 
+
 usher_error_t seg_add( usher_seg_t *seg, uint8_t *path, uintptr_t udata )
 {
-    uint8_t *m = seg->path;
-    uint8_t *k = path;
-    uint8_t prev = 0;
     usher_seg_t *child = NULL;
+    usher_state_t state;
+    int rc = seg_get( seg, path, &state );
+    uint8_t prev = *(state.remain - 1);
     
-    // parse path-string
-    while( *k )
+    // path is too long
+    // reached to tail of segment
+    if( rc == USHER_MATCH_LONG )
     {
-        // reached to tail of segment
-        if( !*m )
-        {
-            // check children
-            if( ( child = seg_getchild( seg, *k ) ) ){
-                seg = child;
-                m = seg->path;
-                goto CHECK_NEXT;
-            }
-            
-            // cannot append child to leaf-segment
-            if( seg->type & USHER_SEG_LEAF ){
-                return USHER_EAPPEND;
-            }
-            // append child
-            else if( ( child = seg_alloc( k, prev, udata ) ) )
-            {
-                if( append2child( seg, child ) == 0 ){
-                    return 0;
-                }
-                pdealloc( child );
-            }
-            
-            return USHER_ENOMEM;
-        }
-        // different
-        else if( *m != *k )
-        {
-            // cannot split variable segment
-            if( seg->type & USHER_SEG_VAR ){
-                return USHER_ESPLIT;
-            }
-            // create child segment
-            else if( ( child = seg_alloc( k, prev, udata ) ) )
-            {
-                // split node and append child segment
-                if( segment2edge( seg, (size_t)(m - seg->path), child ) == 0 ){
-                    return 0;
-                }
-                pdealloc( child );
-            }
-            return USHER_ENOMEM;
+        // cannot append child to leaf-segment
+        if( state.seg->type & USHER_SEG_LEAF ){
+            return USHER_EAPPEND;
         }
         
-CHECK_NEXT:
-        prev = *k;
-        k++;
-        m++;
+        // append child
+        child = seg_alloc( state.remain, prev, udata );
+        if( child )
+        {
+            if( append2child( state.seg, child ) == 0 ){
+                return 0;
+            }
+            pdealloc( child );
+        }
+        
+        return USHER_ENOMEM;
     }
-    
-    // not end of string
-    if( *m )
+    // different
+    else if( rc == USHER_MATCH_DIFF )
     {
-        // cannot split variable segment / cannot change to leaf
-        if( seg->type & USHER_SEG_VAR || prev != '/' ){
+        // cannot split variable segment
+        if( state.seg->type & USHER_SEG_VAR ){
             return USHER_ESPLIT;
         }
-        else if( branchoff( seg, m - seg->path, udata ) != 0 ){
+        
+        // split node and append child segment
+        child = seg_alloc( state.remain, prev, udata );
+        if( child )
+        {
+            if( segment2edge( state.seg, (size_t)(state.cur - state.seg->path),
+                              child ) == 0 ){
+                return 0;
+            }
+            pdealloc( child );
+        }
+        return USHER_ENOMEM;
+
+    }
+    // path is too short
+    else if( rc == USHER_MATCH_SHORT )
+    {
+        // cannot split variable segment / cannot change to leaf
+        if( state.seg->type & USHER_SEG_VAR || prev != '/' ){
+            return USHER_ESPLIT;
+        }
+        else if( branchoff( state.seg, state.cur - state.seg->path,
+                            udata ) != 0 ){
             return USHER_ENOMEM;
         }
     }
+    // USHER_MATCH
     // already registered
-    else if( seg->type & USHER_SEG_EOS ){
+    else if( state.seg->type & USHER_SEG_EOS ){
         return USHER_EALREADY;
     }
     // cannot change to leaf
@@ -385,8 +377,8 @@ CHECK_NEXT:
     }
     // change to node
     else {
-        seg->type = USHER_SEG_EOS;
-        seg->udata = udata;
+        state.seg->type = USHER_SEG_EOS;
+        state.seg->udata = udata;
     }
     
     return USHER_OK;
