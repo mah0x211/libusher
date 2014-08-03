@@ -72,6 +72,7 @@ typedef struct {
 usher_t *usher_alloc( usher_dealloc_cb callback );
 void usher_dealloc( usher_t *u );
 usher_error_t usher_add( usher_t *u, const char *path, void *val );
+usher_error_t usher_remove( usher_t *u, const char *path );
 
 
 typedef enum {
@@ -91,7 +92,6 @@ typedef struct {
 
 usher_match_t usher_get( usher_t *u, const char *path, usher_state_t *state );
 
-int usher_remove( usher_t *u, const char *path );
 
 void usher_dump( usher_t *u );
 

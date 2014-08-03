@@ -59,11 +59,7 @@ void usher_dealloc( usher_t *u )
 usher_error_t usher_add( usher_t *u, const char *path, void *val )
 {
     // error: path-string is null or not valid absolute-path format.
-    if( !path || !*path || *path != USHER_DELIM_SEG ){
-        errno = EINVAL;
-        return -1;
-    }
-    else {
+    if( path && *path && *path == USHER_DELIM_SEG ){
         return seg_add( u->root, (uint8_t*)path, (uintptr_t)val );
     }
     
@@ -81,19 +77,14 @@ usher_match_t usher_get( usher_t *u, const char *path, usher_state_t *state )
     return USHER_MATCH_NONE;
 }
 
-
-int usher_remove( usher_t *u, const char *path )
+usher_error_t usher_remove( usher_t *u, const char *path )
 {
     // path should be valid absolute-path format.
     if( path && *path && *path == USHER_DELIM_SEG ){
-        seg_remove( u->root, (uint8_t*)path, u->callback );
-        return 0;
-    }
-    else {
-        errno = EINVAL;
+        return seg_remove( u->root, (uint8_t*)path, u->callback );
     }
     
-    return -1;
+    return USHER_EINVAL;
 }
 
 void usher_dump( usher_t *u )
