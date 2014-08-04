@@ -96,6 +96,10 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev, uintptr_t udata )
                         seg->nchildren = 1;
                         seg->children[0] = child;
                         child->parent = seg;
+                        if( child->type & USHER_SEG_VAR ){
+                            seg->varchild = child;
+                        }
+                        
                         return seg;
                     }
                     // no-mem
@@ -147,6 +151,9 @@ static inline int append2child( usher_seg_t *seg, usher_seg_t *child )
         seg->children = children;
         seg->nchildren++;
         child->parent = seg;
+        if( child->type & USHER_SEG_VAR ){
+            seg->varchild = child;
+        }
         
         if( seg->nchildren == 1 ){
             children[0] = child;
@@ -209,6 +216,7 @@ static inline int segment2edge( usher_seg_t *seg, size_t pos, usher_seg_t *sibli
     if( branch )
     {
         branch->type = seg->type;
+        branch->varchild = seg->varchild;
         branch->children = seg->children;
         branch->nchildren = seg->nchildren;
         branch->udata = seg->udata;
@@ -234,6 +242,17 @@ static inline int segment2edge( usher_seg_t *seg, size_t pos, usher_seg_t *sibli
             }
             branch->parent = seg;
             sibling->parent = seg;
+            
+            // check variable-segment
+            if( branch->type & USHER_SEG_VAR ){
+                seg->varchild = branch;
+            }
+            else if( sibling->type & USHER_SEG_VAR ){
+                seg->varchild = sibling;
+            }
+            else {
+                seg->varchild = NULL;
+            }
             
             // change children's parent
             for(; i < branch->nchildren; i++ ){
@@ -433,6 +452,10 @@ usher_error_t seg_remove( usher_seg_t *seg, uint8_t *path,
             {
                 usher_seg_t *parent = seg->parent;
                 
+                if( parent && seg->type & USHER_SEG_VAR ){
+                    parent->varchild = NULL;
+                }
+                
                 // do not deallocate if segment has children
                 if( seg->nchildren )
                 {
@@ -495,6 +518,7 @@ CHECK_PARENT:
                                 seg->type = child->type;
                                 seg->children = child->children;
                                 seg->nchildren = child->nchildren;
+                                seg->varchild = child->varchild;
                                 seg->udata = child->udata;
                                 
                                 // change children's parent
@@ -510,6 +534,7 @@ CHECK_PARENT:
                         // deallocate unused children
                         else if( seg->type & USHER_SEG_EOS ){
                             seg->children = pdealloc( seg->children );
+                            seg->varchild = NULL;
                         }
                         // plain path-segment
                         else

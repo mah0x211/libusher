@@ -54,6 +54,7 @@ typedef struct _usher_seg {
     uint8_t *path;
     size_t len;
     struct _usher_seg *parent;
+    struct _usher_seg *varchild;
     struct _usher_seg **children;
     uint8_t nchildren;
     uint8_t type;
