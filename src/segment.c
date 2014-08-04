@@ -104,19 +104,9 @@ usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev, uintptr_t udata )
                 // no-mem
                 pdealloc( seg->path );
             }
-            else
-            {
+            else {
                 seg->udata = udata;
-                // set type as node-segment
-                // NOTE: variable-segment have no trailing-slash
-                if( seg->path[len-1] == USHER_DELIM_SEG ){
-                    seg->type = USHER_SEG_EOS;
-                }
-                // set type as leaf-segment
-                else {
-                    seg->type |= USHER_SEG_LEAF|USHER_SEG_EOS;
-                }
-                
+                seg->type |= USHER_SEG_EOS;
                 return seg;
             }
         }
@@ -262,9 +252,9 @@ static inline int segment2edge( usher_seg_t *seg, size_t pos, usher_seg_t *sibli
     return -1;
 }
 
+
 static inline int branchoff( usher_seg_t *seg, size_t pos, uintptr_t udata )
 {
-    //size_t len = seg->path m - seg->path;
     uint8_t *path = pnalloc( pos + 1, uint8_t );
     
     if( path )
@@ -312,15 +302,9 @@ usher_error_t seg_add( usher_seg_t *seg, uint8_t *path, uintptr_t udata )
     int rc = seg_get( seg, path, &state );
     uint8_t prev = *(state.remain - 1);
     
-    // path is too long
     // reached to tail of segment
     if( rc == USHER_MATCH_LONG )
     {
-        // cannot append child to leaf-segment
-        if( state.seg->type & USHER_SEG_LEAF ){
-            return USHER_EAPPEND;
-        }
-        
         // append child
         child = seg_alloc( state.remain, prev, udata );
         if( child )
@@ -357,8 +341,8 @@ usher_error_t seg_add( usher_seg_t *seg, uint8_t *path, uintptr_t udata )
     // path is too short
     else if( rc == USHER_MATCH_SHORT )
     {
-        // cannot split variable segment / cannot change to leaf
-        if( state.seg->type & USHER_SEG_VAR || prev != '/' ){
+        // cannot split variable segment
+        if( state.seg->type & USHER_SEG_VAR ){
             return USHER_ESPLIT;
         }
         else if( branchoff( state.seg, state.cur - state.seg->path,
@@ -370,10 +354,6 @@ usher_error_t seg_add( usher_seg_t *seg, uint8_t *path, uintptr_t udata )
     // already registered
     else if( state.seg->type & USHER_SEG_EOS ){
         return USHER_EALREADY;
-    }
-    // cannot change to leaf
-    else if( prev != '/' ){
-        return USHER_EAPPEND;
     }
     // change to node
     else {
