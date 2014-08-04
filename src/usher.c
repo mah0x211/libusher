@@ -37,12 +37,8 @@ usher_t *usher_alloc( usher_dealloc_cb callback )
 {
     usher_t *u = pcalloc( usher_t );
     
-    if( u )
-    {
+    if( u ){
         u->callback = callback;
-        if( !( u->root = seg_alloc( (uint8_t*)"/", 0, 0 ) ) ){
-            u = pdealloc( u );
-        }
     }
     
     return u;
