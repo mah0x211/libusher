@@ -44,11 +44,9 @@ char *usher_strerror( usher_error_t err );
 #define USHER_DELIM_VAR '$'
 
 #define USHER_SEG_NODE  0x0
-#define USHER_SEG_LEAF  0x1
-#define USHER_SEG_VAR   0x2
+#define USHER_SEG_VAR   0x1
 // end-of-segment
-#define USHER_SEG_EOS   0x4
-
+#define USHER_SEG_EOS   0x2
 
 typedef struct _usher_seg {
     // userdata

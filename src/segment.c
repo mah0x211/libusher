@@ -419,101 +419,119 @@ RET_RESULT:
 }
 
 
-int seg_remove( usher_seg_t *seg, uint8_t *path, usher_dealloc_cb callback )
+usher_error_t seg_remove( usher_seg_t *seg, uint8_t *path,
+                          usher_dealloc_cb callback )
 {
-    uint8_t *m = seg->path;
-    uint8_t *k = path;
+    usher_state_t state;
     
-    // parse path-string
-    while( *k )
+    switch( seg_get( seg, path, &state ) )
     {
-        // reached to tail of segment
-        if( !*m )
-        {
-            uint8_t idx = 0;
-            usher_seg_t *child = seg_getchild_idx( seg, *k, &idx );
-            
-            // remove children
-            if( child && seg_remove( child, k, callback ) == 0 )
+        case USHER_MATCH:
+            seg = state.seg;
+            // end-of-segment
+            if( seg->type & USHER_SEG_EOS )
             {
-                seg->nchildren--;
-                if( seg->nchildren > 1 )
+                usher_seg_t *parent = seg->parent;
+                
+                // do not deallocate if segment has children
+                if( seg->nchildren )
                 {
-                    // fill in blank
-                    for(; idx < seg->nchildren; idx++ ){
-                        seg->children[idx] = seg->children[idx+1];
+                    // call user defined finalizer
+                    if( callback && seg->type & USHER_SEG_EOS ){
+                        callback( (void*)seg->udata );
                     }
-                    seg->children[idx] = NULL;
+                    // unset flag
+                    seg->type &= ~USHER_SEG_EOS;
+                    seg->udata = 0;
                 }
-                else if( seg->nchildren == 1 )
+                else
                 {
-                    seg->children[0] = seg->children[1-idx];
-                    seg->children[1] = NULL;
-                    child = seg->children[0];
+                    uint8_t i;
                     
-                    // merge
-                    if( !( seg->type & USHER_SEG_EOS ) &&
-                        !( child->type & USHER_SEG_VAR ) )
+                    // deallocate target segment
+                    seg_dealloc( seg, callback );
+                    
+CHECK_PARENT:
+                    if( parent )
                     {
-                        size_t len = seg->len + child->len;
+                        seg = parent;
+                        parent = seg->parent;
+                        seg->nchildren--;
                         
-                        path = prealloc( seg->path, len + 1, uint8_t );
-                        // no-mem
-                        if( !path ){
-                            return -1;
+                        // fill in blank
+                        if( seg->nchildren > 1 )
+                        {
+                            for( i = state.idx; i < seg->nchildren; i++ ){
+                                seg->children[i] = seg->children[i+1];
+                            }
+                            seg->children[i] = NULL;
                         }
-                        memcpy( path + seg->len, child->path, child->len );
-                        path[len] = 0;
-                        // release existing children
-                        pdealloc( seg->children );
-                        
-                        seg->path = path;
-                        seg->len = len;
-                        seg->type = child->type;
-                        seg->children = child->children;
-                        seg->nchildren = child->nchildren;
-                        seg->udata = child->udata;
-                        
-                        // change children's parent
-                        for( idx = 0; idx < seg->nchildren; idx++ ){
-                            seg->children[idx]->parent = seg;
+                        // merge
+                        else if( seg->nchildren == 1 )
+                        {
+                            usher_seg_t *child = NULL;
+                            
+                            seg->children[0] = seg->children[1-state.idx];
+                            seg->children[1] = NULL;
+                            child = seg->children[0];
+                            
+                            if( !( seg->type & USHER_SEG_EOS ) &&
+                                !( child->type & USHER_SEG_VAR ) )
+                            {
+                                size_t len = seg->len + child->len;
+                                
+                                path = prealloc( seg->path, len + 1, uint8_t );
+                                // no-mem
+                                if( !path ){
+                                    return USHER_ENOMEM;
+                                }
+                                memcpy( path + seg->len, child->path, child->len );
+                                path[len] = 0;
+                                // release existing children
+                                pdealloc( seg->children );
+                                
+                                seg->path = path;
+                                seg->len = len;
+                                seg->type = child->type;
+                                seg->children = child->children;
+                                seg->nchildren = child->nchildren;
+                                seg->udata = child->udata;
+                                
+                                // change children's parent
+                                for( i = 0; i < seg->nchildren; i++ ){
+                                    seg->children[i]->parent = seg;
+                                }
+                                
+                                // remove child
+                                child->children = NULL;
+                                seg_dealloc( child, NULL );
+                            }
                         }
-                        
-                        // remove child
-                        child->children = NULL;
-                        seg_dealloc( child, NULL );
+                        // deallocate unused children
+                        else if( seg->type & USHER_SEG_EOS ){
+                            seg->children = pdealloc( seg->children );
+                        }
+                        // plain path-segment
+                        else
+                        {
+                            if( parent ){
+                                seg_getchild_idx( parent, *seg->path, &state.idx );
+                            }
+                            else {
+                                state.idx = 0;
+                            }
+                            seg_dealloc( seg, callback );
+                            goto CHECK_PARENT;
+                        }
                     }
                 }
-                else if( !( seg->type & USHER_SEG_EOS ) ){
-                    seg_dealloc( seg, callback );
-                    return 0;
-                }
-                // deallocate unused children
-                else {
-                    seg->children = pdealloc( seg->children );
-                }
+                
+                return USHER_OK;
             }
-            
-            return -1;
-        }
-        // different
-        else if( *m != *k ){
-            return -1;
-        }
-        
-        k++;
-        m++;
+        break;
     }
     
-    // not end of string or not end-of-segment
-    if( *m || !( seg->type & USHER_SEG_EOS ) ){
-        return -1;
-    }
-    
-    // dealloc target segment
-    seg_dealloc( seg, callback );
-    
-    return 0;
+    return USHER_ENOENT;
 }
 
 
