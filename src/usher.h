@@ -32,7 +32,8 @@ typedef enum {
     USHER_ENOMEM,
     USHER_EAPPEND,
     USHER_ESPLIT,
-    USHER_EALREADY
+    USHER_EALREADY,
+    USHER_ENOENT
 } usher_error_t;
 
 char *usher_strerror( usher_error_t err );

@@ -25,6 +25,8 @@ char *usher_strerror( usher_error_t err )
             return "cannot split variable/leaf segment";
         case USHER_EALREADY:
             return "segment already defined";
+        case USHER_ENOENT:
+            return "segment not found";
     }
     
     return "unknown error";
