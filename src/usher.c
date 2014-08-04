@@ -80,16 +80,20 @@ usher_error_t usher_add( usher_t *u, const char *path, void *val )
 
 usher_match_t usher_get( usher_t *u, const char *path, usher_state_t *state )
 {
-    if( path && *path ){
+    if( path && *path && u->root ){
         return seg_get( u->root, (uint8_t*)path, state );
     }
     
     return USHER_MATCH_NONE;
 }
 
+
 usher_error_t usher_remove( usher_t *u, const char *path )
 {
-    if( path && *path ){
+    if( !u->root ){
+        return USHER_ENOENT;
+    }
+    else if( path && *path ){
         return seg_remove( u->root, (uint8_t*)path, u->callback );
     }
     
