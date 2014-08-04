@@ -24,13 +24,15 @@
 
 
 // segment
-usher_seg_t *seg_alloc( uint8_t *path, uint8_t prev, uintptr_t udata );
+usher_seg_t *seg_alloc( const usher_t *u, uint8_t *path, uint8_t prev,
+                        uintptr_t udata );
 void seg_dealloc( usher_seg_t *seg, usher_dealloc_cb callback );
 
 usher_seg_t *seg_getchild_idx( usher_seg_t *seg, uint8_t k, uint8_t *idx );
 #define seg_getchild(seg,k) seg_getchild_idx(seg,k,NULL)
 
-usher_error_t seg_add( usher_seg_t *node, uint8_t *path, uintptr_t udata );
+usher_error_t seg_add( const usher_t *u, usher_seg_t *node, uint8_t *path,
+                       uintptr_t udata );
 
 usher_match_t seg_get( usher_seg_t *seg, uint8_t *path, usher_state_t *state );
 usher_error_t seg_remove( usher_t *u, usher_seg_t *seg, uint8_t *path );

@@ -39,10 +39,6 @@ typedef enum {
 char *usher_strerror( usher_error_t err );
 
 
-
-#define USHER_DELIM_SEG '/'
-#define USHER_DELIM_VAR '$'
-
 #define USHER_SEG_NODE  0x0
 #define USHER_SEG_VAR   0x1
 // end-of-segment
@@ -60,16 +56,21 @@ typedef struct _usher_seg {
     uint8_t type;
 } usher_seg_t;
 
-
 typedef void(*usher_dealloc_cb)( void* );
+
+#define USHER_DELIM_OPEN    0
+#define USHER_DELIM_VAR     1
+#define USHER_DELIM_CLOSE   2
 
 typedef struct {
     usher_seg_t *root;
     usher_dealloc_cb callback;
+    // delimiter: [delim_open][delim_var]<*parameter_name>[delim_close]
+    uint8_t delim[3];
 } usher_t;
 
 
-usher_t *usher_alloc( usher_dealloc_cb callback );
+usher_t *usher_alloc( const char delim[], usher_dealloc_cb callback );
 void usher_dealloc( usher_t *u );
 usher_error_t usher_add( usher_t *u, const char *path, void *val );
 usher_error_t usher_remove( usher_t *u, const char *path );
