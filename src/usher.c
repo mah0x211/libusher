@@ -90,7 +90,7 @@ usher_error_t usher_remove( usher_t *u, const char *path )
         return USHER_ENOENT;
     }
     else if( path && *path ){
-        return seg_remove( u->root, (uint8_t*)path, u->callback );
+        return seg_remove( u, u->root, (uint8_t*)path );
     }
     
     return USHER_EINVAL;

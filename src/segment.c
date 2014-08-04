@@ -438,8 +438,7 @@ RET_RESULT:
 }
 
 
-usher_error_t seg_remove( usher_seg_t *seg, uint8_t *path,
-                          usher_dealloc_cb callback )
+usher_error_t seg_remove( usher_t *u, usher_seg_t *seg, uint8_t *path )
 {
     usher_state_t state;
     
@@ -460,8 +459,8 @@ usher_error_t seg_remove( usher_seg_t *seg, uint8_t *path,
                 if( seg->nchildren )
                 {
                     // call user defined finalizer
-                    if( callback && seg->type & USHER_SEG_EOS ){
-                        callback( (void*)seg->udata );
+                    if( u->callback && seg->type & USHER_SEG_EOS ){
+                        u->callback( (void*)seg->udata );
                     }
                     // unset flag
                     seg->type &= ~USHER_SEG_EOS;
@@ -472,7 +471,7 @@ usher_error_t seg_remove( usher_seg_t *seg, uint8_t *path,
                     uint8_t i;
                     
                     // deallocate target segment
-                    seg_dealloc( seg, callback );
+                    seg_dealloc( seg, u->callback );
                     
 CHECK_PARENT:
                     if( parent )
@@ -545,9 +544,13 @@ CHECK_PARENT:
                             else {
                                 state.idx = 0;
                             }
-                            seg_dealloc( seg, callback );
+                            seg_dealloc( seg, u->callback );
                             goto CHECK_PARENT;
                         }
+                    }
+                    // set null to root
+                    else {
+                        u->root = NULL;
                     }
                 }
                 
