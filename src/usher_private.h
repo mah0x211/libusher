@@ -24,8 +24,9 @@
 
 
 // segment
-usher_seg_t *seg_alloc( const usher_t *u, uint8_t *path, uint8_t prev,
-                        uintptr_t udata );
+usher_error_t seg_alloc( usher_seg_t **pseg, const usher_t *u, uint8_t *path,
+                         uint8_t prev, uintptr_t udata );
+
 void seg_dealloc( usher_seg_t *seg, usher_dealloc_cb callback );
 
 usher_seg_t *seg_getchild_idx( usher_seg_t *seg, uint8_t k, uint8_t *idx );

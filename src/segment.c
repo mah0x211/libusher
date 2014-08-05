@@ -40,9 +40,10 @@ static inline uint8_t bsearch_child_idx( usher_seg_t **children, uint8_t len,
 }
 
 
-usher_seg_t *seg_alloc( const usher_t *u, uint8_t *path, uint8_t prev,
-                        uintptr_t udata )
+usher_error_t seg_alloc( usher_seg_t **pseg, const usher_t *u, uint8_t *path,
+                         uint8_t prev, uintptr_t udata )
 {
+    usher_error_t err = USHER_ENOMEM;
     usher_seg_t *seg = pcalloc( usher_seg_t );
     
     if( seg )
@@ -63,7 +64,7 @@ usher_seg_t *seg_alloc( const usher_t *u, uint8_t *path, uint8_t prev,
                 // found variable-delimiter
                 if( *ptr == sym_var && ( !prev || prev == sym_open ) )
                 {
-                    // should try to find close delimiter if ptr is same as path
+                    // should try to find close delimiter if ptr is same of path
                     if( ptr == path )
                     {
                         // set type as variable-segment
@@ -76,6 +77,11 @@ usher_seg_t *seg_alloc( const usher_t *u, uint8_t *path, uint8_t prev,
                                 break;
                             }
                             ptr++;
+                        }
+                        // cannot allocate unnamed variable-segment
+                        if( ( ptr - path ) == 1 ){
+                            pdealloc( seg );
+                            return USHER_EFORMAT;
                         }
                     }
                     break;
@@ -102,9 +108,10 @@ usher_seg_t *seg_alloc( const usher_t *u, uint8_t *path, uint8_t prev,
                 if( ( seg->children = pnalloc( 1, usher_seg_t* ) ) )
                 {
                     // allocate child-segment with remaining path
-                    usher_seg_t *child = seg_alloc( u, ptr, prev, udata );
+                    usher_seg_t *child = NULL;
                     
-                    if( child )
+                    err = seg_alloc( &child, u, ptr, prev, udata );
+                    if( err == USHER_OK )
                     {
                         seg->nchildren = 1;
                         seg->children[0] = child;
@@ -112,25 +119,27 @@ usher_seg_t *seg_alloc( const usher_t *u, uint8_t *path, uint8_t prev,
                         if( child->type & USHER_SEG_VAR ){
                             seg->varchild = child;
                         }
+                        *pseg = seg;
                         
-                        return seg;
+                        return USHER_OK;
                     }
-                    // no-mem
                     pdealloc( seg->children );
                 }
-                // no-mem
                 pdealloc( seg->path );
             }
             else {
                 seg->udata = udata;
                 seg->type |= USHER_SEG_EOS;
-                return seg;
+                *pseg = seg;
+                
+                return USHER_OK;
             }
         }
-        seg = pdealloc( seg );
+
+        pdealloc( seg );
     }
     
-    return seg;
+    return err;
 }
 
 
@@ -153,9 +162,10 @@ void seg_dealloc( usher_seg_t *seg, usher_dealloc_cb callback )
 }
 
 
-static inline int append2child( usher_seg_t *seg, usher_seg_t *child )
+static inline usher_error_t append2child( usher_seg_t *seg, usher_seg_t *child )
 {
-    usher_seg_t **children = prealloc( seg->children, seg->nchildren + 1, usher_seg_t* );
+    usher_seg_t **children = prealloc( seg->children, seg->nchildren + 1,
+                                       usher_seg_t* );
     
     if( children )
     {
@@ -192,11 +202,11 @@ static inline int append2child( usher_seg_t *seg, usher_seg_t *child )
             }
         }
         
-        return 0;
+        return USHER_OK;
     }
     
     // no-mem
-    return -1;
+    return USHER_ENOMEM;
 }
 
 
@@ -222,12 +232,14 @@ usher_seg_t *seg_getchild_idx( usher_seg_t *seg, uint8_t k, uint8_t *idx )
 }
 
 
-static inline int segment2edge( const usher_t *u, usher_seg_t *seg, size_t pos,
-                                usher_seg_t *sibling )
+static inline usher_error_t segment2edge( const usher_t *u, usher_seg_t *seg,
+                                          size_t pos, usher_seg_t *sibling )
 {
-    usher_seg_t *branch = seg_alloc( u, seg->path + pos, *(seg->path + pos - 1), 0 );
+    usher_seg_t *branch = NULL;
+    usher_error_t err = seg_alloc( &branch, u, seg->path + pos,
+                                   *(seg->path + pos - 1), 0 );
     
-    if( branch )
+    if( err == USHER_OK )
     {
         branch->type = seg->type;
         branch->varchild = seg->varchild;
@@ -273,22 +285,25 @@ static inline int segment2edge( const usher_t *u, usher_seg_t *seg, size_t pos,
                 branch->children[i]->parent = branch;
             }
             
-            return 0;
+            return USHER_OK;
         }
         
+        // no-mem
+        err = USHER_ENOMEM;
         // revert
         seg->children = branch->children;
         pdealloc( branch );
     }
     
-    // no-mem
-    return -1;
+    return err;
 }
 
 
-static inline int branchoff( const usher_t *u, usher_seg_t *seg, size_t pos, uintptr_t udata )
+static inline usher_error_t branchoff( const usher_t *u, usher_seg_t *seg,
+                                       size_t pos, uintptr_t udata )
 {
     uint8_t *path = pnalloc( pos + 1, uint8_t );
+    usher_error_t err = USHER_ENOMEM;
     
     if( path )
     {
@@ -298,11 +313,13 @@ static inline int branchoff( const usher_t *u, usher_seg_t *seg, size_t pos, uin
         path[pos] = 0;
         
         // allocate new segment
-        if( ( parent = seg_alloc( u, path, 0, udata ) ) )
+        err = seg_alloc( &parent, u, path, 0, udata );
+        if( err == USHER_OK )
         {
             pdealloc( path );
             parent->parent = seg->parent;
-            if( append2child( parent, seg ) == 0 )
+            err = append2child( parent, seg );
+            if( err == USHER_OK )
             {
                 // update parent children
                 uint8_t idx = bsearch_child_idx( parent->parent->children,
@@ -315,7 +332,7 @@ static inline int branchoff( const usher_t *u, usher_seg_t *seg, size_t pos, uin
                 memmove( seg->path, seg->path + pos, seg->len );
                 seg->path[seg->len] = 0;
                 
-                return 0;
+                return USHER_OK;
             }
             seg_dealloc( parent, NULL );
         }
@@ -324,56 +341,57 @@ static inline int branchoff( const usher_t *u, usher_seg_t *seg, size_t pos, uin
         }
     }
 
-    return -1;
+    return err;
 }
 
 
 usher_error_t seg_add( const usher_t *u, usher_seg_t *seg, uint8_t *path,
                        uintptr_t udata )
 {
+    usher_error_t err = USHER_OK;
     usher_seg_t *child = NULL;
     usher_state_t state;
-    int rc = seg_get( seg, path, &state );
+    usher_match_t match = seg_get( seg, path, &state );
     uint8_t prev = *(state.remain - 1);
     
     // reached to tail of segment
-    if( rc == USHER_MATCH_LONG )
+    if( match == USHER_MATCH_LONG )
     {
         // append child
-        child = seg_alloc( u, state.remain, prev, udata );
-        if( child )
+        err = seg_alloc( &child, u, state.remain, prev, udata );
+        if( err == USHER_OK )
         {
-            if( append2child( state.seg, child ) == 0 ){
-                return 0;
+            err = append2child( state.seg, child );
+            if( err != USHER_OK ){
+                pdealloc( child );
             }
-            pdealloc( child );
         }
         
-        return USHER_ENOMEM;
+        return err;
     }
     // different
-    else if( rc == USHER_MATCH_DIFF )
+    else if( match == USHER_MATCH_DIFF )
     {
         // cannot split variable segment
         if( state.seg->type & USHER_SEG_VAR && state.seg->path != state.cur ){
             return USHER_ESPLIT;
         }
-        
         // split node and append child segment
-        child = seg_alloc( u, state.remain, prev, udata );
-        if( child )
+        err = seg_alloc( &child, u, state.remain, prev, udata );
+        if( err == USHER_OK )
         {
-            if( segment2edge( u, state.seg, state.cur - state.seg->path,
-                              child ) == 0 ){
-                return 0;
+            err = segment2edge( u, state.seg, state.cur - state.seg->path,
+                                child );
+            if( err != USHER_OK ){
+                pdealloc( child );
             }
-            pdealloc( child );
         }
-        return USHER_ENOMEM;
+        
+        return err;
 
     }
     // path is too short
-    else if( rc == USHER_MATCH_SHORT )
+    else if( match == USHER_MATCH_SHORT )
     {
         // cannot split variable segment
         if( state.seg->type & USHER_SEG_VAR ){
@@ -395,13 +413,13 @@ usher_error_t seg_add( const usher_t *u, usher_seg_t *seg, uint8_t *path,
         state.seg->udata = udata;
     }
     
-    return USHER_OK;
+    return err;
 }
 
 
 usher_match_t seg_get( usher_seg_t *seg, uint8_t *path, usher_state_t *state )
 {
-    int rc = USHER_MATCH;
+    usher_match_t match = USHER_MATCH;
     uint8_t *m = seg->path;
     uint8_t *k = path;
     usher_seg_t *child = NULL;
@@ -421,12 +439,12 @@ usher_match_t seg_get( usher_seg_t *seg, uint8_t *path, usher_state_t *state )
             }
             
             // path is too long
-            rc = USHER_MATCH_LONG;
+            match = USHER_MATCH_LONG;
             goto RET_RESULT;
         }
         // different
         else if( *m != *k ){
-            rc = USHER_MATCH_DIFF;
+            match = USHER_MATCH_DIFF;
             goto RET_RESULT;
         }
         
@@ -438,7 +456,7 @@ CHECK_NEXT:
     // path is too short
     // not end of string
     if( *m ){
-        rc = USHER_MATCH_SHORT;
+        match = USHER_MATCH_SHORT;
     }
 
 RET_RESULT:
@@ -449,7 +467,7 @@ RET_RESULT:
         .idx = idx
     };
     
-    return rc;
+    return match;
 }
 
 

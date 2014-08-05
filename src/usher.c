@@ -19,8 +19,8 @@ char *usher_strerror( usher_error_t err )
             return "invalid argument";
         case USHER_ENOMEM:
             return "could not allocate memory";
-        case USHER_EAPPEND:
-            return "cannot append segment to leaf-segment";
+        case USHER_EFORMAT:
+            return "cannot create unnamed variable segment";
         case USHER_ESPLIT:
             return "cannot split variable/leaf segment";
         case USHER_EALREADY:
@@ -66,12 +66,8 @@ usher_error_t usher_add( usher_t *u, const char *path, void *val )
         if( u->root ){
             return seg_add( u, u->root, (uint8_t*)path, (uintptr_t)val );
         }
-        else if( !( u->root = seg_alloc( u, (uint8_t*)path, 0, (uintptr_t)val ) ) ){
-            return USHER_ENOMEM;
-        }
-        else {
-            return USHER_OK;
-        }
+        
+        return seg_alloc( &u->root, u, (uint8_t*)path, 0, (uintptr_t)val );
     }
     
     return USHER_EINVAL;
