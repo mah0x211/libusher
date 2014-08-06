@@ -12,9 +12,9 @@
 #include "tests.h"
 #include "tests_keys.h"
 
-#define run_test(fn,k,n) do { \
-    printf( "%-25s %-12s[%03d] ", #fn, #k, n ); \
-    fn( k, n ); \
+#define run_test(fn,k,n,delim) do { \
+    printf( "%-25s %-12s[%03d][%3s] ", #fn, #k, n, delim ); \
+    fn( k, n, delim ); \
     printf("OK\n"); \
 }while(0)
 
@@ -25,17 +25,17 @@ int main(int argc, const char * argv[])
     
     // test: static keys
     len = sizeof( STATIC_KEYS ) / sizeof( const char* );
-    run_test( test_insert_short2long, STATIC_KEYS, len );
-    run_test( test_insert_long2short, STATIC_KEYS, len );
-    run_test( test_remove_short2long, STATIC_KEYS, len );
-    run_test( test_remove_long2short, STATIC_KEYS, len );
+    run_test( test_insert_short2long, STATIC_KEYS, len, NULL );
+    run_test( test_insert_long2short, STATIC_KEYS, len, NULL );
+    run_test( test_remove_short2long, STATIC_KEYS, len, NULL );
+    run_test( test_remove_long2short, STATIC_KEYS, len, NULL );
     
     // test: github api keys
     len = sizeof( GITHUB_API ) / sizeof( const char* );
-    run_test( test_insert_short2long, GITHUB_API, len );
-    run_test( test_insert_long2short, GITHUB_API, len );
-    run_test( test_remove_short2long, GITHUB_API, len );
-    run_test( test_remove_long2short, GITHUB_API, len );
+    run_test( test_insert_short2long, GITHUB_API, len, "/:/" );
+    run_test( test_insert_long2short, GITHUB_API, len, "/:/" );
+    run_test( test_remove_short2long, GITHUB_API, len, "/:/" );
+    run_test( test_remove_long2short, GITHUB_API, len, "/:/" );
     
     return 0;
 }

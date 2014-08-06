@@ -22,9 +22,9 @@ static void finalize( void *val ){
     do_remove_check( u, i, k ); \
 }while(0)
 
-void test_remove_short2long( const char *keys[], size_t len )
+void test_remove_short2long( const char *keys[], size_t len, const char *delim )
 {
-    usher_t *u = usher_alloc( "/:/", finalize );
+    usher_t *u = usher_alloc( delim, finalize );
     size_t i = 0;
     
     // insert from short words to long words
@@ -40,9 +40,9 @@ void test_remove_short2long( const char *keys[], size_t len )
 }
 
 
-void test_remove_long2short( const char *keys[], size_t len )
+void test_remove_long2short( const char *keys[], size_t len, const char *delim )
 {
-    usher_t *u = usher_alloc( "/:/", finalize );
+    usher_t *u = usher_alloc( delim, finalize );
     size_t i = len;
     
     // insert from short words to long words

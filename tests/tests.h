@@ -63,10 +63,10 @@ static inline void do_remove_check( usher_t *u, int idx, const char *keys[] )
     
 }
 
-void test_insert_short2long( const char *keys[], size_t len );
-void test_insert_long2short( const char *keys[], size_t len );
+void test_insert_short2long( const char *keys[], size_t len, const char *delim );
+void test_insert_long2short( const char *keys[], size_t len, const char *delim );
 
-void test_remove_short2long( const char *keys[], size_t len );
-void test_remove_long2short( const char *keys[], size_t len );
+void test_remove_short2long( const char *keys[], size_t len, const char *delim );
+void test_remove_long2short( const char *keys[], size_t len, const char *delim );
 
 #endif
