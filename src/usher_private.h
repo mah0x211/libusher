@@ -41,7 +41,6 @@ usher_error_t seg_remove( usher_t *u, usher_seg_t *seg, uint8_t *path );
 usher_error_t seg_exec( const usher_t *u, usher_seg_t *seg, uint8_t *path,
                         usher_glob_t *glob );
 
-void seg_dump( usher_seg_t *node, int lv );
-
+void seg_dump( usher_seg_t *seg, int lv, int last );
 
 #endif

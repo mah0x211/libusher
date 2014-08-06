@@ -749,29 +749,56 @@ CHECK_NEXT:
     return USHER_OK;
 }
 
-
-void seg_dump( usher_seg_t *seg, int lv )
+// dump to JSON format
+void seg_dump( usher_seg_t *seg, int lv, int last )
 {
-    usher_seg_t *child;
-    size_t i;
+    int obj_pad = lv * 4;
+    int pad = obj_pad + 2 - 1;
     
-    printf(
-        "lv:%5d| %*s +'%s':%zu -> nchildren: %zu, type: %d\n",
-        lv, lv * 2, "", seg->path, seg->len, seg->nchildren, seg->type
-    );
-        
-    for( i = 0; i < seg->nchildren; i++ )
+    printf( "%*s{\n", obj_pad, "" );
+    printf( "%*s \"path\": \"%s\",\n", pad, "", seg->path );
+    printf( "%*s \"len\": %zu,\n", pad, "", seg->len );
+    
+    if( seg->type )
     {
-        child = seg->children[i];
-        
-        printf(
-            "lv:%2d-%02zu| %*s -'%s':%zu -> nchildren: %zu, type: %d\n",
-            lv, i, lv * 2 + 2, "", child->path, child->len, child->nchildren, child->type
-        );
-        if( child->nchildren ){
-            seg_dump( child, lv + 1 );
+        printf( "%*s \"type\": [", pad, "" );
+        if( seg->type & ( USHER_SEG_VAR|USHER_SEG_EOS) ){
+            printf( "\"VAR\", \"EOS\"" );
         }
+        else if( seg->type & USHER_SEG_VAR ){
+            printf( "\"VAR\"" );
+        }
+        else {
+            printf( "\"EOS\"" );
+        }
+        printf( "],\n" );
     }
+    else {
+        printf( "%*s \"type\": [\"NONE\"],\n", pad, "" );
+    }
+    
+    printf( "%*s \"parent\": \"%s\",\n", pad, "", ( seg->parent ) ? (char*)seg->parent->path : "NONE" );
+    
+    if( seg->varchild ){
+        printf( "%*s \"varchild\": \"%s\",\n", pad, "", (char*)seg->varchild->path );
+    }
+    
+    if( seg->nchildren )
+    {
+        uint8_t i;
+        
+        printf( "%*s \"nchildren\": %u,\n", pad, "", seg->nchildren );
+        printf( "%*s \"children\": [\n", pad, "" );
+        for( i = 0; i < seg->nchildren; i++ ){
+            seg_dump( seg->children[i], lv + 1, seg->nchildren - 1 == i );
+        }
+        printf( "%*s ]\n", pad, "" );
+    }
+    else {
+        printf( "%*s \"nchildren\": %u\n", pad, "", seg->nchildren );
+    }
+    
+    printf( "%*s}%s\n", obj_pad, "", last ? "" : "," );
 }
 
 

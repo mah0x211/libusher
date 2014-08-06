@@ -122,7 +122,7 @@ void usher_glob_dealloc( usher_glob_t *glob )
 void usher_dump( usher_t *u )
 {
     if( u->root ){
-        seg_dump( u->root, 0 );
+        seg_dump( u->root, 0, 1 );
     }
 }
 
