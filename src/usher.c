@@ -96,6 +96,29 @@ usher_error_t usher_remove( usher_t *u, const char *path )
     return USHER_EINVAL;
 }
 
+
+usher_error_t usher_exec( usher_t *u, const char *path, usher_glob_t *glob )
+{
+    if( path && *path && u->root ){
+        return seg_exec( u, u->root, (uint8_t*)path, glob );
+    }
+    
+    return USHER_ENOENT;
+}
+
+void usher_glob_dealloc( usher_glob_t *glob )
+{
+    if( glob->items )
+    {
+        while( glob->nitems ){
+            glob->nitems--;
+            pdealloc( glob->items[glob->nitems].name );
+            pdealloc( glob->items[glob->nitems].val );
+        }
+        glob->items = pdealloc( glob->items );
+    }
+}
+
 void usher_dump( usher_t *u )
 {
     if( u->root ){

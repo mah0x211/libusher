@@ -12,17 +12,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <errno.h>
-
-typedef struct {
-    uint8_t *head;
-    size_t len;
-} r2param_item_t;
-
-typedef struct {
-    r2param_item_t *items;
-    size_t nitem;
-} r2param_t;
 
 
 // errors
@@ -69,7 +58,6 @@ typedef struct {
     uint8_t delim[3];
 } usher_t;
 
-
 usher_t *usher_alloc( const char delim[], usher_dealloc_cb callback );
 void usher_dealloc( usher_t *u );
 usher_error_t usher_add( usher_t *u, const char *path, void *val );
@@ -92,6 +80,20 @@ typedef struct {
 } usher_state_t;
 
 usher_match_t usher_get( usher_t *u, const char *path, usher_state_t *state );
+
+
+typedef struct {
+    uint8_t *name;
+    uint8_t *val;
+} usher_glob_item_t;
+
+typedef struct {
+    size_t nitems;
+    usher_glob_item_t *items;
+} usher_glob_t;
+
+usher_error_t usher_exec( usher_t *u, const char *path, usher_glob_t *glob );
+void usher_glob_dealloc( usher_glob_t *glob );
 
 
 void usher_dump( usher_t *u );
