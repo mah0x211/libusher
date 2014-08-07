@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: libusher
+Description: executable tree based container library.
+Version: @PACKAGE_VERSION@
+Libs: -L${libdir} -lusher
+Cflags: -I${includedir}
