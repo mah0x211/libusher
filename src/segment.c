@@ -730,7 +730,7 @@ CHECK_VARCHILD:
                 usher_glob_dealloc( &glob );
                 return USHER_ENOMEM;
             }
-            return USHER_OK;
+            goto RET_RESULT;
         }
         else {
             usher_glob_dealloc( &glob );
@@ -763,6 +763,10 @@ CHECK_NEXT:
             return USHER_ENOMEM;
         }
     }
+
+RET_RESULT:
+    // set result
+    *pglob = glob;
     
     return USHER_OK;
 }
