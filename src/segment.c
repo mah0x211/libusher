@@ -784,7 +784,7 @@ void seg_dump( usher_seg_t *seg, int lv, int last )
     if( seg->type )
     {
         printf( "%*s \"type\": [", pad, "" );
-        if( seg->type & ( USHER_SEG_VAR|USHER_SEG_EOS) ){
+        if( seg->type == (USHER_SEG_VAR|USHER_SEG_EOS) ){
             printf( "\"VAR\", \"EOS\"" );
         }
         else if( seg->type & USHER_SEG_VAR ){
