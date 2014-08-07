@@ -24,18 +24,20 @@ int main(int argc, const char * argv[])
     size_t len;
     
     // test: static keys
-    len = sizeof( STATIC_KEYS ) / sizeof( const char* );
+    len = sizeof( STATIC_KEYS ) / sizeof( testdata_t );
     run_test( test_insert_short2long, STATIC_KEYS, len, NULL );
     run_test( test_insert_long2short, STATIC_KEYS, len, NULL );
     run_test( test_remove_short2long, STATIC_KEYS, len, NULL );
     run_test( test_remove_long2short, STATIC_KEYS, len, NULL );
+    run_test( test_exec, STATIC_KEYS, len, NULL );
     
     // test: github api keys
-    len = sizeof( GITHUB_API ) / sizeof( const char* );
+    len = sizeof( GITHUB_API ) / sizeof( testdata_t );
     run_test( test_insert_short2long, GITHUB_API, len, "/:/" );
     run_test( test_insert_long2short, GITHUB_API, len, "/:/" );
     run_test( test_remove_short2long, GITHUB_API, len, "/:/" );
     run_test( test_remove_long2short, GITHUB_API, len, "/:/" );
+    run_test( test_exec, GITHUB_API, len, "/:/" );
     
     return 0;
 }

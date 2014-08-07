@@ -13,10 +13,16 @@
 #include <stdio.h>
 #include <assert.h>
 
+typedef struct {
+    const char *path;
+    const char *key;
+    usher_glob_t globs;
+} testdata_t;
 
-static inline void do_insert( usher_t *u, int idx, const char *keys[] )
+
+static inline void do_insert( usher_t *u, int idx, const testdata_t data[] )
 {
-    const char *key = keys[idx];
+    const char *key = data[idx].path;
     usher_error_t err = usher_add( u, key, (void*)key );
     
     if( err != USHER_OK ){
@@ -25,9 +31,9 @@ static inline void do_insert( usher_t *u, int idx, const char *keys[] )
     }
 }
 
-static inline void do_insert_check( usher_t *u, int idx, const char *keys[] )
+static inline void do_insert_check( usher_t *u, int idx, const testdata_t data[] )
 {
-    const char *key = keys[idx];
+    const char *key = data[idx].path;
     usher_state_t state;
     usher_match_t match = usher_get( u, key, &state );
     
@@ -39,9 +45,9 @@ static inline void do_insert_check( usher_t *u, int idx, const char *keys[] )
     }
 }
 
-static inline void do_remove( usher_t *u, int idx, const char *keys[] )
+static inline void do_remove( usher_t *u, int idx, const testdata_t data[] )
 {
-    const char *key = keys[idx];
+    const char *key = data[idx].path;
     usher_error_t err = usher_remove( u, key );
     
     if( err ){
@@ -50,9 +56,9 @@ static inline void do_remove( usher_t *u, int idx, const char *keys[] )
     }
 }
 
-static inline void do_remove_check( usher_t *u, int idx, const char *keys[] )
+static inline void do_remove_check( usher_t *u, int idx, const testdata_t data[] )
 {
-    const char *key = keys[idx];
+    const char *key = data[idx].path;
     usher_state_t state;
     usher_match_t match = usher_get( u, key, &state );
     
@@ -63,10 +69,12 @@ static inline void do_remove_check( usher_t *u, int idx, const char *keys[] )
     
 }
 
-void test_insert_short2long( const char *keys[], size_t len, const char *delim );
-void test_insert_long2short( const char *keys[], size_t len, const char *delim );
+void test_insert_short2long( const testdata_t data[], size_t len, const char *delim );
+void test_insert_long2short( const testdata_t data[], size_t len, const char *delim );
 
-void test_remove_short2long( const char *keys[], size_t len, const char *delim );
-void test_remove_long2short( const char *keys[], size_t len, const char *delim );
+void test_remove_short2long( const testdata_t data[], size_t len, const char *delim );
+void test_remove_long2short( const testdata_t data[], size_t len, const char *delim );
+
+void test_exec( const testdata_t data[], size_t len, const char *delim );
 
 #endif
