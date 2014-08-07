@@ -111,7 +111,7 @@ usher_error_t seg_alloc( usher_seg_t **pseg, const usher_t *u, uint8_t *path,
             len = (size_t)(ptr - path);
         }
         else {
-            len = strlen( path );
+            len = strlen( (char*)path );
         }
         
         if( ( seg->path = pnalloc( len + 1, uint8_t ) ) )
@@ -726,7 +726,7 @@ CHECK_VARCHILD:
         {
             // substract variable-segment
             if( glob_add( &glob, parent->varchild->path, varhead,
-                          strlen( varhead ) ) ){
+                          strlen( (char*)varhead ) ) ){
                 usher_glob_dealloc( &glob );
                 return USHER_ENOMEM;
             }
@@ -758,7 +758,7 @@ CHECK_NEXT:
         }
         // substract variable-segment
         else if( glob_add( &glob, parent->varchild->path, varhead,
-                           strlen( varhead ) ) ){
+                           strlen( (char*)varhead ) ) ){
             usher_glob_dealloc( &glob );
             return USHER_ENOMEM;
         }
