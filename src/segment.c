@@ -427,7 +427,7 @@ usher_error_t seg_add( const usher_t *u, usher_seg_t *seg, uint8_t *path,
     }
     // change to node
     else {
-        state.seg->type = USHER_SEG_EOS;
+        state.seg->type |= USHER_SEG_EOS;
         state.seg->udata = udata;
     }
     
