@@ -130,7 +130,6 @@ void usher_glob_dealloc( usher_glob_t *glob )
     {
         while( glob->nitems ){
             glob->nitems--;
-            pdealloc( glob->items[glob->nitems].name );
             pdealloc( glob->items[glob->nitems].val );
         }
         glob->items = pdealloc( glob->items );
