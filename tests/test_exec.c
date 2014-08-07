@@ -35,12 +35,12 @@ void test_exec( const testdata_t data[], size_t len, const char *delim )
         glob.items = NULL;
         err = usher_exec( u, item->key, &glob );
         if( err ){
-            printf( "\nEXEC ERR: [%d] %s -> %s\n", i, item->path, usher_strerror( err ) );
+            printf( "\nEXEC ERR[%zu]: %s -> %s\n", i, item->path, usher_strerror( err ) );
             assert(0);
         }
         else if( glob.nitems != item->globs.nitems ){
             printf(
-                "\nEXEC ERR: [%d] %s -> number of catch param should be %zu but %zu\n",
+                "\nEXEC ERR[%zu]: %s -> number of catch param should be %zu but %zu\n",
                 i, item->path, item->globs.nitems, glob.nitems
             );
             printf( "key: %s\n", item->key );
@@ -48,8 +48,8 @@ void test_exec( const testdata_t data[], size_t len, const char *delim )
         }
         
         for( j = 0; j < glob.nitems; j++ ){
-            assert( strcmp( glob.items[j].name, item->globs.items[j].name ) == 0 );
-            assert( strcmp( glob.items[j].val, item->globs.items[j].val ) == 0 );
+            assert( strcmp( (const char*)glob.items[j].name, (const char*)item->globs.items[j].name ) == 0 );
+            assert( strcmp( (const char*)glob.items[j].val, (const char*)item->globs.items[j].val ) == 0 );
         }
         usher_glob_dealloc( &glob );
     }

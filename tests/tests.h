@@ -26,7 +26,7 @@ static inline void do_insert( usher_t *u, int idx, const testdata_t data[] )
     usher_error_t err = usher_add( u, key, (void*)key );
     
     if( err != USHER_OK ){
-        printf( "\nINSERT ERR: %s -> %s\n", idx, key, usher_strerror( err ) );
+        printf( "\nINSERT ERR[%d] %s -> %s\n", idx, key, usher_strerror( err ) );
         assert(0);
     }
 }
@@ -40,7 +40,7 @@ static inline void do_insert_check( usher_t *u, int idx, const testdata_t data[]
     if( match != USHER_MATCH ||
         !( state.seg->type & USHER_SEG_EOS ) ||
         state.seg->udata != (uintptr_t)key ){
-        printf( "\nINSERT CHK ERR: [%d] %s\n", idx, key );
+        printf( "\nINSERT CHK ERR[%d]: %s\n", idx, key );
         assert(0);
     }
 }
@@ -51,7 +51,7 @@ static inline void do_remove( usher_t *u, int idx, const testdata_t data[] )
     usher_error_t err = usher_remove( u, key );
     
     if( err ){
-        printf( "\nREMOVE ERR: [%d] %s -> %s\n", idx, key, usher_strerror( err ) );
+        printf( "\nREMOVE ERR[%d]: %s -> %s\n", idx, key, usher_strerror( err ) );
         assert(0);
     }
 }
@@ -63,7 +63,7 @@ static inline void do_remove_check( usher_t *u, int idx, const testdata_t data[]
     usher_match_t match = usher_get( u, key, &state );
     
     if( match == USHER_MATCH && state.seg->udata == (uintptr_t)key ){
-        printf( "\nREMOVE CHK ERR: [%d] %s == %zu == %zu\n", idx, key );
+        printf( "\nREMOVE CHK ERR[%d]: %s is still reachable\n", idx, key );
         assert(0);
     }
     
