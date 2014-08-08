@@ -642,7 +642,6 @@ usher_error_t seg_exec( const usher_t *u, usher_seg_t *seg, uint8_t *path,
     uint8_t *m = seg->path;
     uint8_t *k = path;
     uint8_t *varhead = k;
-    usher_seg_t *parent = seg;
     usher_seg_t *child = NULL;
     usher_glob_t glob = {
         .seg = NULL,
@@ -670,7 +669,6 @@ CHECK_VARCHILD:
                 if( err != USHER_OK ){
                     goto RET_ERROR;
                 }
-                parent = seg;
                 seg = child;
                 m = seg->path;
                 varhead = k;
@@ -689,8 +687,8 @@ CHECK_VARCHILD:
                 goto RET_FOUND;
             }
             // lookup eos segment from parents
-            else if( glob.nitems ){
-                seg = parent;
+            else if( seg->parent && glob.nitems ){
+                seg = seg->parent;
                 goto MERGE_PARENT;
             }
             // not found
@@ -709,7 +707,6 @@ CHECK_VARCHILD:
                     seg = child;
                     goto CHECK_VARCHILD;
                 }
-                parent = seg;
                 seg = child;
                 m = seg->path;
             }
@@ -730,15 +727,18 @@ CHECK_VARCHILD:
         // found different
         else if( *m != *k )
         {
-            // jump if have varchild
-            if( parent->varchild ){
-                seg = parent->varchild;
-                goto CHECK_VARCHILD;
-            }
-            // jump if parent is VEOS
-            else if( parent->type == USHER_SEG_VEOS ){
-                seg = parent;
-                goto CHECK_VARCHILD;
+            if( seg->parent )
+            {
+                // jump if have varchild
+                if( seg->parent->varchild ){
+                    seg = seg->parent->varchild;
+                    goto CHECK_VARCHILD;
+                }
+                // jump if parent is VEOS
+                else if( seg->parent->type == USHER_SEG_VEOS ){
+                    seg = seg->parent;
+                    goto CHECK_VARCHILD;
+                }
             }
             // lookup eos segment from parents
             else if( glob.nitems ){
@@ -763,9 +763,12 @@ CHECK_NEXT:
     if( *m )
     {
         seg = seg->parent;
-        
+        // not found
+        if( !seg ){
+            goto RET_ERROR;
+        }
         // substract variable-segment
-        if( seg->varchild && seg->varchild->type & USHER_SEG_EOS )
+        else if( seg->varchild && seg->varchild->type & USHER_SEG_EOS )
         {
             err = glob_add( &glob, seg->varchild, varhead,
                             strlen( (char*)varhead ) );
