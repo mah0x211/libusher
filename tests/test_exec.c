@@ -22,7 +22,8 @@ void test_exec( const testdata_t data[], size_t len, const char *delim )
     usher_error_t err;
     usher_glob_t glob;
     const testdata_t *item;
-    size_t i, j;
+    size_t i, j, vlen;
+    char *sval;
     
     for( i = 0; i < len; i++ ){
         do_insert( u, i, data );
@@ -49,7 +50,12 @@ void test_exec( const testdata_t data[], size_t len, const char *delim )
         
         for( j = 0; j < glob.nitems; j++ ){
             assert( strcmp( (const char*)glob.items[j].name, (const char*)item->globs.items[j].name ) == 0 );
-            assert( strcmp( (const char*)glob.items[j].val, (const char*)item->globs.items[j].val ) == 0 );
+            vlen = glob.items[j].tail - glob.items[j].head;
+            sval = pnalloc( vlen + 1, char );
+            memcpy( sval, glob.items[j].head, vlen );
+            sval[vlen] = 0;
+            assert( strcmp( sval, (const char*)item->globs.items[j].head ) == 0 );
+            pdealloc( sval );
         }
         usher_glob_dealloc( &glob );
     }
