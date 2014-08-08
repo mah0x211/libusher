@@ -80,7 +80,11 @@ typedef struct {
 
 usher_t *usher_alloc( const char delim[], usher_dealloc_cb callback );
 void usher_dealloc( usher_t *u );
-usher_error_t usher_add( usher_t *u, const char *path, void *val );
+
+usher_error_t usher_set( usher_t *u, const char *path, void *val, int replace );
+#define usher_add( u, path, val )       usher_set( u, path, val, 0 )
+#define usher_replace( u, path, val )   usher_set( u, path, val, 1 )
+
 usher_error_t usher_remove( usher_t *u, const char *path );
 
 

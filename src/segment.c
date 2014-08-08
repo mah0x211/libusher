@@ -364,7 +364,7 @@ static inline usher_error_t branchoff( const usher_t *u, usher_seg_t *seg,
 
 
 usher_error_t seg_add( const usher_t *u, usher_seg_t *seg, uint8_t *path,
-                       uintptr_t udata )
+                       uintptr_t udata, int replace )
 {
     usher_error_t err = USHER_OK;
     usher_seg_t *child = NULL;
@@ -422,8 +422,14 @@ usher_error_t seg_add( const usher_t *u, usher_seg_t *seg, uint8_t *path,
     }
     // USHER_MATCH
     // already registered
-    else if( state.seg->type & USHER_SEG_EOS ){
-        return USHER_EALREADY;
+    else if( state.seg->type & USHER_SEG_EOS )
+    {
+        if( replace == 0 ){
+            return USHER_EALREADY;
+        }
+        // call user defined finalizer
+        u->callback( (void*)state.seg->udata );
+        state.seg->udata = udata;
     }
     // change to node
     else {

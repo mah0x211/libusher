@@ -76,13 +76,13 @@ void usher_dealloc( usher_t *u )
 }
 
 
-usher_error_t usher_add( usher_t *u, const char *path, void *val )
+usher_error_t usher_set( usher_t *u, const char *path, void *val, int replace )
 {
     // error: path-string is null
     if( path && *path )
     {
         if( u->root ){
-            return seg_add( u, u->root, (uint8_t*)path, (uintptr_t)val );
+            return seg_add( u, u->root, (uint8_t*)path, (uintptr_t)val, replace );
         }
         
         return seg_alloc( &u->root, u, (uint8_t*)path, 0, (uintptr_t)val );
