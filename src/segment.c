@@ -622,7 +622,7 @@ static inline usher_error_t glob_add( usher_glob_t *glob, usher_seg_t *varchild,
     
     // no-mem
     if( items ){
-        items[glob->nitems].name = varchild->path;
+        items[glob->nitems].name = varchild->path + 1;
         items[glob->nitems].head = val;
         items[glob->nitems].tail= val + len;
         glob->items = items;
