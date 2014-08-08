@@ -1,6 +1,30 @@
 AM_CPPFLAGS = -I../src
-check_PROGRAMS = libusher_test
-libusher_test_LDFLAGS = -L../src -lusher
-libusher_test_SOURCES = testall.c test_remove.c test_insert.c test_exec.c
+AM_CFLAGS = -D TESTS
 
-TESTS = libusher_test
+check_PROGRAMS = test_static_insert
+test_static_insert_LDFLAGS = -L../src -lusher
+test_static_insert_SOURCES = test_static_insert.c
+
+check_PROGRAMS += test_static_remove
+test_static_remove_LDFLAGS = -L../src -lusher
+test_static_remove_SOURCES = test_static_remove.c
+
+check_PROGRAMS += test_static_exec
+test_static_exec_LDFLAGS = -L../src -lusher
+test_static_exec_SOURCES = test_static_exec.c
+
+
+check_PROGRAMS += test_github_insert
+test_github_insert_LDFLAGS = -L../src -lusher
+test_github_insert_SOURCES = test_github_insert.c
+
+check_PROGRAMS += test_github_remove
+test_github_remove_LDFLAGS = -L../src -lusher
+test_github_remove_SOURCES = test_github_remove.c
+
+check_PROGRAMS += test_github_exec
+test_github_exec_LDFLAGS = -L../src -lusher
+test_github_exec_SOURCES = test_github_exec.c
+
+
+TESTS = $(check_PROGRAMS)

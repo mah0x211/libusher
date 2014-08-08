@@ -69,12 +69,29 @@ static inline void do_remove_check( usher_t *u, int idx, const testdata_t data[]
     
 }
 
-void test_insert_short2long( const testdata_t data[], size_t len, const char *delim );
-void test_insert_long2short( const testdata_t data[], size_t len, const char *delim );
 
-void test_remove_short2long( const testdata_t data[], size_t len, const char *delim );
-void test_remove_long2short( const testdata_t data[], size_t len, const char *delim );
+void test_static_insert_short2long( const testdata_t data[], size_t len, const char *delim );
+void test_static_insert_long2short( const testdata_t data[], size_t len, const char *delim );
 
-void test_exec( const testdata_t data[], size_t len, const char *delim );
+void test_static_remove_short2long( const testdata_t data[], size_t len, const char *delim );
+void test_static_remove_long2short( const testdata_t data[], size_t len, const char *delim );
+
+void test_static_exec( const testdata_t data[], size_t len, const char *delim );
+
+
+void test_github_insert_short2long( const testdata_t data[], size_t len, const char *delim );
+void test_github_insert_long2short( const testdata_t data[], size_t len, const char *delim );
+
+void test_github_remove_short2long( const testdata_t data[], size_t len, const char *delim );
+void test_github_remove_long2short( const testdata_t data[], size_t len, const char *delim );
+
+void test_github_exec( const testdata_t data[], size_t len, const char *delim );
+
+#define run_test(fn,k,n,delim) do { \
+    printf( "%-30s %-12s[%03zu][%3s] ", #fn, #k, n, delim ); \
+    fn( k, n, delim ); \
+    printf("OK\n"); \
+}while(0)
+
 
 #endif

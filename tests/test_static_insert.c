@@ -15,7 +15,7 @@
 }while(0)
 
 
-void test_github_insert_short2long( const testdata_t data[], size_t len, const char *delim )
+void test_static_insert_short2long( const testdata_t data[], size_t len, const char *delim )
 {
     usher_t *u = usher_alloc( delim, NULL );
     size_t i = 0;
@@ -32,7 +32,7 @@ void test_github_insert_short2long( const testdata_t data[], size_t len, const c
     usher_dealloc( u );
 }
 
-void test_github_insert_long2short( const testdata_t data[], size_t len, const char *delim )
+void test_static_insert_long2short( const testdata_t data[], size_t len, const char *delim )
 {
     usher_t *u = usher_alloc( delim, NULL );
     size_t i = len;
@@ -58,10 +58,10 @@ int main(int argc, const char * argv[])
 {
     size_t len;
     
-    // test: github api keys
-    len = sizeof( GITHUB_API ) / sizeof( testdata_t );
-    run_test( test_github_insert_short2long, GITHUB_API, len, "/:/" );
-    run_test( test_github_insert_long2short, GITHUB_API, len, "/:/" );
+    // test: static keys
+    len = sizeof( STATIC_KEYS ) / sizeof( testdata_t );
+    run_test( test_static_insert_short2long, STATIC_KEYS, len, NULL );
+    run_test( test_static_insert_long2short, STATIC_KEYS, len, NULL );
     
     return 0;
 }

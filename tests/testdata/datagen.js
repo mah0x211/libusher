@@ -29,7 +29,7 @@ function path2testdata( path )
     if( items.length ){
         str += SP8 +
             '.items = (usher_glob_item_t[])' +
-            stringify( items ) +
+            stringify( items ).replace( /(["][^"]+["])/g, '(uint8_t*)$1') +
             '\n' + SP4;
     }
     else {

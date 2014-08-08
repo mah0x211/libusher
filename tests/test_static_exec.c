@@ -16,7 +16,7 @@
     do_remove_check( u, i, k ); \
 }while(0)
 
-void test_github_exec( const testdata_t data[], size_t len, const char *delim )
+void test_static_exec( const testdata_t data[], size_t len, const char *delim )
 {
     usher_t *u = usher_alloc( delim, NULL );
     usher_error_t err;
@@ -70,9 +70,9 @@ int main(int argc, const char * argv[])
 {
     size_t len;
     
-    // test: github api keys
-    len = sizeof( GITHUB_API ) / sizeof( testdata_t );
-    run_test( test_github_exec, GITHUB_API, len, "/:/" );
+    // test: static keys
+    len = sizeof( STATIC_KEYS ) / sizeof( testdata_t );
+    run_test( test_static_exec, STATIC_KEYS, len, NULL );
     
     return 0;
 }
