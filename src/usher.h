@@ -51,6 +51,7 @@ char *usher_strerror( usher_error_t err );
 #define USHER_SEG_VAR   0x1
 // end-of-segment
 #define USHER_SEG_EOS   0x2
+#define USHER_SEG_VEOS  0x3
 
 typedef struct _usher_seg {
     // userdata
