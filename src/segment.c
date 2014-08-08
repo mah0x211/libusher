@@ -614,10 +614,11 @@ CHECK_PARENT:
 }
 
 
-static inline usher_error_t glob_add( usher_glob_t *glob, uint8_t *name,
+static inline usher_error_t glob_add( usher_glob_t *glob, usher_seg_t *varchild,
                                       uint8_t *val, size_t len )
 {
-    usher_glob_item_t *items = prealloc( glob->items, glob->nitems + 1, usher_glob_item_t );
+    usher_glob_item_t *items = prealloc( glob->items, glob->nitems + 1,
+                                         usher_glob_item_t );
     
     // no-mem
     if( items )
@@ -628,7 +629,8 @@ static inline usher_error_t glob_add( usher_glob_t *glob, uint8_t *name,
             memcpy( ptr, val, len );
             ptr[len] = 0;
             items[glob->nitems].val = ptr;
-            items[glob->nitems].name = name;
+            items[glob->nitems].cur = val;
+            items[glob->nitems].name = varchild->path;
             glob->items = items;
             glob->nitems++;
             return USHER_OK;
@@ -642,14 +644,16 @@ static inline usher_error_t glob_add( usher_glob_t *glob, uint8_t *name,
 usher_error_t seg_exec( const usher_t *u, usher_seg_t *seg, uint8_t *path,
                         usher_glob_t *pglob )
 {
+    usher_error_t err = USHER_ENOENT;
     const uint8_t sym_open = u->delim[USHER_DELIM_OPEN];
     const uint8_t sym_close = u->delim[USHER_DELIM_CLOSE];
     uint8_t *m = seg->path;
     uint8_t *k = path;
     uint8_t *varhead = k;
-    usher_seg_t *parent = NULL;
+    usher_seg_t *parent = seg;
     usher_seg_t *child = NULL;
     usher_glob_t glob = {
+        .seg = NULL,
         .nitems = 0,
         .items = NULL
     };
@@ -657,92 +661,107 @@ usher_error_t seg_exec( const usher_t *u, usher_seg_t *seg, uint8_t *path,
     // parse path-string
     while( *k )
     {
-        // reached to tail of segment
-        if( !*m )
+        if( seg->type & USHER_SEG_VAR )
+        {
+CHECK_VARCHILD:
+            // search close symbole of variable-segment
+            if( *k == sym_close ){ k++; }
+            while( *k && *k != sym_close ){
+                k++;
+            }
+            
+            // found child segment
+            if( *k && ( child = seg_getchild( seg, *k ) ) )
+            {
+                // substract variable-segment
+                err = glob_add( &glob, seg, varhead, k - varhead );
+                if( err != USHER_OK ){
+                    goto RET_ERROR;
+                }
+                parent = seg;
+                seg = child;
+                m = seg->path;
+                varhead = k;
+            }
+            else if( seg->type & USHER_SEG_EOS )
+            {
+                if( glob.nitems &&
+                    glob.items[glob.nitems-1].name == seg->path ) {
+                    goto MERGE_PARENT;
+                }
+                // substract variable-segment
+                err = glob_add( &glob, seg, varhead, strlen( (char*)varhead ) );
+                if( err != USHER_OK ){
+                    goto RET_ERROR;
+                }
+                goto RET_FOUND;
+            }
+            // lookup eos segment from parents
+            else if( glob.nitems ){
+                seg = parent;
+                goto MERGE_PARENT;
+            }
+            // not found
+            else {
+                goto RET_ERROR;
+            }
+        }
+        // reached to tail of segment-path
+        else if( !*m )
         {
             // check children
             if( ( child = seg_getchild( seg, *k ) ) )
             {
-                // jump if child is same of parent->varchild
+                // jump if child is variable
                 if( child->type & USHER_SEG_VAR ){
+                    seg = child;
                     goto CHECK_VARCHILD;
                 }
+                parent = seg;
                 seg = child;
                 m = seg->path;
-                goto CHECK_NEXT;
             }
             // jump if have varchild
-            else if( parent && parent->varchild ){
+            else if( seg && seg->varchild ){
+                seg = seg->varchild;
                 goto CHECK_VARCHILD;
             }
-            
-            // no match
-            usher_glob_dealloc( &glob );
-            return USHER_ENOENT;
+            // lookup eos segment from parents
+            else if( glob.nitems ){
+                goto MERGE_PARENT;
+            }
+            // not found
+            else {
+                goto RET_ERROR;
+            }
         }
         // found different
         else if( *m != *k )
         {
             // jump if have varchild
-            if( parent && parent->varchild ){
+            if( parent->varchild ){
+                seg = parent->varchild;
                 goto CHECK_VARCHILD;
             }
+            // jump if parent is VEOS
+            else if( parent->type == USHER_SEG_VEOS ){
+                seg = parent;
+                goto CHECK_VARCHILD;
+            }
+            // lookup eos segment from parents
+            else if( glob.nitems ){
+                goto MERGE_PARENT;
+            }
             
-            // no match
-            usher_glob_dealloc( &glob );
-            return USHER_ENOENT;
+            // not found
+            goto RET_ERROR;
         }
+        
         // check next char
-        else {
-            goto CHECK_NEXT;
-        }
-        
-        
-CHECK_VARCHILD:
-        // search close symbole of variable-segment
-        while( *k && *k != sym_close ){
-            k++;
-        }
-        // skip open-symbol
-        if( varhead != path ){
-            varhead++;
-        }
-        
-        // found child segment
-        if( *k && ( child = seg_getchild( parent->varchild, *k ) ) )
-        {
-            // substract variable-segment
-            if( glob_add( &glob, parent->varchild->path, varhead, k-varhead ) ){
-                usher_glob_dealloc( &glob );
-                return USHER_ENOMEM;
-            }
-            
-            seg = child;
-            m = seg->path;
-            parent = seg;
-        }
-        // variable segment type is end-of-segment
-        else if( parent->varchild->type & USHER_SEG_EOS )
-        {
-            // substract variable-segment
-            if( glob_add( &glob, parent->varchild->path, varhead,
-                          strlen( (char*)varhead ) ) ){
-                usher_glob_dealloc( &glob );
-                return USHER_ENOMEM;
-            }
-            goto RET_RESULT;
-        }
-        else {
-            usher_glob_dealloc( &glob );
-            return USHER_ENOENT;
-        }
-        
-        
 CHECK_NEXT:
         // found open symbol of variable-segment
         if( *k == sym_open ){
-            parent = seg;
-            varhead = k;
+            varhead = k + 1;
         }
         k++;
         m++;
@@ -751,25 +770,64 @@ CHECK_NEXT:
     // path is too short
     if( *m )
     {
-        // no match
-        if( !( seg->type & USHER_SEG_EOS ) || !parent || !parent->varchild ){
-            usher_glob_dealloc( &glob );
-            return USHER_ENOENT;
-        }
+        seg = seg->parent;
+        
         // substract variable-segment
-        else if( glob_add( &glob, parent->varchild->path, varhead,
-                           strlen( (char*)varhead ) ) ){
-            usher_glob_dealloc( &glob );
-            return USHER_ENOMEM;
+        if( seg->varchild && seg->varchild->type & USHER_SEG_EOS )
+        {
+            err = glob_add( &glob, seg->varchild, varhead,
+                            strlen( (char*)varhead ) );
+            if( err != USHER_OK ){
+                goto RET_ERROR;
+            }
+            seg = seg->varchild;
+        }
+        else if( glob.nitems )
+        {
+            size_t i;
+MERGE_PARENT:
+            
+            do {
+                if( seg->type & USHER_SEG_VAR )
+                {
+                    // deallocate last glob
+                    varhead = glob.items[--glob.nitems].cur;
+                    pdealloc( glob.items[glob.nitems].val );
+                    if( seg->type == USHER_SEG_VEOS ){
+                        break;
+                    }
+                }
+            } while( ( seg = seg->parent ) );
+            
+            // not found
+            if( !seg ){
+                goto RET_ERROR;
+            }
+            
+            err = glob_add( &glob, seg, varhead, strlen( (char*)varhead ) );
+            if( err != USHER_OK ){
+                goto RET_ERROR;
+            }
+        }
+        // not found
+        else {
+            goto RET_ERROR;
         }
     }
-
-RET_RESULT:
+    
+RET_FOUND:
+    // set current segment
+    glob.seg = seg;
     // set result
     *pglob = glob;
-    
     return USHER_OK;
+
+RET_ERROR:
+    usher_glob_dealloc( &glob );
+    
+    return err;
 }
+
 
 // dump to JSON format
 void seg_dump( usher_seg_t *seg, int lv, int last )
