@@ -126,13 +126,8 @@ usher_error_t usher_exec( usher_t *u, const char *path, usher_glob_t *glob )
 
 void usher_glob_dealloc( usher_glob_t *glob )
 {
-    if( glob->items )
-    {
-        while( glob->nitems ){
-            glob->nitems--;
-            pdealloc( glob->items[glob->nitems].val );
-        }
-        glob->items = pdealloc( glob->items );
+    if( glob->items ){
+        pdealloc( glob->items );
     }
 }
 

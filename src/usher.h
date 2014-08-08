@@ -104,8 +104,8 @@ usher_match_t usher_get( usher_t *u, const char *path, usher_state_t *state );
 
 typedef struct {
     uint8_t *name;
-    uint8_t *val;
-    uint8_t *cur;
+    uint8_t *head;
+    uint8_t *tail;
 } usher_glob_item_t;
 
 typedef struct {

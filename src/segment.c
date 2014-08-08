@@ -621,21 +621,13 @@ static inline usher_error_t glob_add( usher_glob_t *glob, usher_seg_t *varchild,
                                          usher_glob_item_t );
     
     // no-mem
-    if( items )
-    {
-        uint8_t *ptr = pnalloc( len + 1, uint8_t );
-        
-        if( ptr ){
-            memcpy( ptr, val, len );
-            ptr[len] = 0;
-            items[glob->nitems].val = ptr;
-            items[glob->nitems].cur = val;
-            items[glob->nitems].name = varchild->path;
-            glob->items = items;
-            glob->nitems++;
-            return USHER_OK;
-        }
-        pdealloc( items );
+    if( items ){
+        items[glob->nitems].name = varchild->path;
+        items[glob->nitems].head = val;
+        items[glob->nitems].tail= val + len;
+        glob->items = items;
+        glob->nitems++;
+        return USHER_OK;
     }
     
     return USHER_ENOMEM;
@@ -791,8 +783,7 @@ MERGE_PARENT:
                 if( seg->type & USHER_SEG_VAR )
                 {
                     // deallocate last glob
-                    varhead = glob.items[--glob.nitems].cur;
-                    pdealloc( glob.items[glob.nitems].val );
+                    varhead = glob.items[--glob.nitems].head;
                     if( seg->type == USHER_SEG_VEOS ){
                         break;
                     }
