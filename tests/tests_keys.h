@@ -19,11 +19,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":client_id",
+                    (uint8_t*)"client_id",
                     (uint8_t*)"client_id"
                 },
                 {
-                    (uint8_t*)":access_token",
+                    (uint8_t*)"access_token",
                     (uint8_t*)"access_token"
                 }
             }
@@ -43,7 +43,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":id",
+                    (uint8_t*)"id",
                     (uint8_t*)"id"
                 }
             }
@@ -84,7 +84,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":id",
+                    (uint8_t*)"id",
                     (uint8_t*)"id"
                 }
             }
@@ -97,7 +97,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":id",
+                    (uint8_t*)"id",
                     (uint8_t*)"id"
                 }
             }
@@ -131,7 +131,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":name",
+                    (uint8_t*)"name",
                     (uint8_t*)"name"
                 }
             }
@@ -151,19 +151,19 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 4,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repository",
+                    (uint8_t*)"repository",
                     (uint8_t*)"repository"
                 },
                 {
-                    (uint8_t*)":state",
+                    (uint8_t*)"state",
                     (uint8_t*)"state"
                 },
                 {
-                    (uint8_t*)":keyword",
+                    (uint8_t*)"keyword",
                     (uint8_t*)"keyword"
                 }
             }
@@ -176,7 +176,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":keyword",
+                    (uint8_t*)"keyword",
                     (uint8_t*)"keyword"
                 }
             }
@@ -189,7 +189,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":email",
+                    (uint8_t*)"email",
                     (uint8_t*)"email"
                 }
             }
@@ -202,7 +202,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":keyword",
+                    (uint8_t*)"keyword",
                     (uint8_t*)"keyword"
                 }
             }
@@ -222,11 +222,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -246,7 +246,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":id",
+                    (uint8_t*)"id",
                     (uint8_t*)"id"
                 }
             }
@@ -259,7 +259,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":id",
+                    (uint8_t*)"id",
                     (uint8_t*)"id"
                 }
             }
@@ -272,7 +272,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":org",
+                    (uint8_t*)"org",
                     (uint8_t*)"org"
                 }
             }
@@ -285,7 +285,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":org",
+                    (uint8_t*)"org",
                     (uint8_t*)"org"
                 }
             }
@@ -298,7 +298,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":org",
+                    (uint8_t*)"org",
                     (uint8_t*)"org"
                 }
             }
@@ -311,7 +311,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":org",
+                    (uint8_t*)"org",
                     (uint8_t*)"org"
                 }
             }
@@ -324,11 +324,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":org",
+                    (uint8_t*)"org",
                     (uint8_t*)"org"
                 },
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 }
             }
@@ -341,7 +341,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":org",
+                    (uint8_t*)"org",
                     (uint8_t*)"org"
                 }
             }
@@ -354,11 +354,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":org",
+                    (uint8_t*)"org",
                     (uint8_t*)"org"
                 },
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 }
             }
@@ -371,7 +371,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":org",
+                    (uint8_t*)"org",
                     (uint8_t*)"org"
                 }
             }
@@ -384,7 +384,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":org",
+                    (uint8_t*)"org",
                     (uint8_t*)"org"
                 }
             }
@@ -404,11 +404,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -421,19 +421,19 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 4,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":archive_format",
+                    (uint8_t*)"archive_format",
                     (uint8_t*)"archive_format"
                 },
                 {
-                    (uint8_t*)":ref",
+                    (uint8_t*)"ref",
                     (uint8_t*)"ref"
                 }
             }
@@ -446,11 +446,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -463,15 +463,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":assignee",
+                    (uint8_t*)"assignee",
                     (uint8_t*)"assignee"
                 }
             }
@@ -484,11 +484,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -501,15 +501,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":branch",
+                    (uint8_t*)"branch",
                     (uint8_t*)"branch"
                 }
             }
@@ -522,11 +522,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -539,15 +539,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 }
             }
@@ -560,11 +560,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -577,15 +577,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":id",
+                    (uint8_t*)"id",
                     (uint8_t*)"id"
                 }
             }
@@ -598,11 +598,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -615,15 +615,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":sha",
+                    (uint8_t*)"sha",
                     (uint8_t*)"sha"
                 }
             }
@@ -636,15 +636,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":sha",
+                    (uint8_t*)"sha",
                     (uint8_t*)"sha"
                 }
             }
@@ -657,11 +657,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -674,11 +674,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -691,11 +691,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -708,15 +708,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":id",
+                    (uint8_t*)"id",
                     (uint8_t*)"id"
                 }
             }
@@ -729,11 +729,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -746,11 +746,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -763,15 +763,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":sha",
+                    (uint8_t*)"sha",
                     (uint8_t*)"sha"
                 }
             }
@@ -784,15 +784,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":sha",
+                    (uint8_t*)"sha",
                     (uint8_t*)"sha"
                 }
             }
@@ -805,11 +805,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -822,11 +822,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -839,15 +839,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":sha",
+                    (uint8_t*)"sha",
                     (uint8_t*)"sha"
                 }
             }
@@ -860,15 +860,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":sha",
+                    (uint8_t*)"sha",
                     (uint8_t*)"sha"
                 }
             }
@@ -881,11 +881,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -898,15 +898,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":id",
+                    (uint8_t*)"id",
                     (uint8_t*)"id"
                 }
             }
@@ -919,11 +919,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -936,15 +936,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":number",
+                    (uint8_t*)"number",
                     (uint8_t*)"number"
                 }
             }
@@ -957,15 +957,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":number",
+                    (uint8_t*)"number",
                     (uint8_t*)"number"
                 }
             }
@@ -978,15 +978,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":number",
+                    (uint8_t*)"number",
                     (uint8_t*)"number"
                 }
             }
@@ -999,15 +999,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":number",
+                    (uint8_t*)"number",
                     (uint8_t*)"number"
                 }
             }
@@ -1020,11 +1020,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1037,15 +1037,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":id",
+                    (uint8_t*)"id",
                     (uint8_t*)"id"
                 }
             }
@@ -1058,11 +1058,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1075,15 +1075,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":id",
+                    (uint8_t*)"id",
                     (uint8_t*)"id"
                 }
             }
@@ -1096,11 +1096,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1113,15 +1113,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":id",
+                    (uint8_t*)"id",
                     (uint8_t*)"id"
                 }
             }
@@ -1134,11 +1134,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1151,15 +1151,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":name",
+                    (uint8_t*)"name",
                     (uint8_t*)"name"
                 }
             }
@@ -1172,11 +1172,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1189,11 +1189,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1206,15 +1206,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":number",
+                    (uint8_t*)"number",
                     (uint8_t*)"number"
                 }
             }
@@ -1227,15 +1227,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":number",
+                    (uint8_t*)"number",
                     (uint8_t*)"number"
                 }
             }
@@ -1248,11 +1248,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1265,11 +1265,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1282,15 +1282,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":number",
+                    (uint8_t*)"number",
                     (uint8_t*)"number"
                 }
             }
@@ -1303,15 +1303,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":number",
+                    (uint8_t*)"number",
                     (uint8_t*)"number"
                 }
             }
@@ -1324,15 +1324,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":number",
+                    (uint8_t*)"number",
                     (uint8_t*)"number"
                 }
             }
@@ -1345,15 +1345,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":number",
+                    (uint8_t*)"number",
                     (uint8_t*)"number"
                 }
             }
@@ -1366,15 +1366,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":number",
+                    (uint8_t*)"number",
                     (uint8_t*)"number"
                 }
             }
@@ -1387,11 +1387,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1404,15 +1404,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":number",
+                    (uint8_t*)"number",
                     (uint8_t*)"number"
                 }
             }
@@ -1425,11 +1425,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1442,11 +1442,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1459,15 +1459,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":id",
+                    (uint8_t*)"id",
                     (uint8_t*)"id"
                 }
             }
@@ -1480,15 +1480,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":id",
+                    (uint8_t*)"id",
                     (uint8_t*)"id"
                 }
             }
@@ -1501,11 +1501,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1518,11 +1518,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1535,11 +1535,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1552,11 +1552,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1569,11 +1569,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1586,11 +1586,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1603,15 +1603,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 },
                 {
-                    (uint8_t*)":ref",
+                    (uint8_t*)"ref",
                     (uint8_t*)"ref"
                 }
             }
@@ -1624,11 +1624,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1641,11 +1641,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1658,11 +1658,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1675,11 +1675,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1727,7 +1727,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":id",
+                    (uint8_t*)"id",
                     (uint8_t*)"id"
                 }
             }
@@ -1740,7 +1740,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":id",
+                    (uint8_t*)"id",
                     (uint8_t*)"id"
                 }
             }
@@ -1753,11 +1753,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":id",
+                    (uint8_t*)"id",
                     (uint8_t*)"id"
                 },
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 }
             }
@@ -1770,7 +1770,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":id",
+                    (uint8_t*)"id",
                     (uint8_t*)"id"
                 }
             }
@@ -1783,15 +1783,15 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 3,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":id",
+                    (uint8_t*)"id",
                     (uint8_t*)"id"
                 },
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1832,7 +1832,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 }
             }
@@ -1859,7 +1859,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":id",
+                    (uint8_t*)"id",
                     (uint8_t*)"id"
                 }
             }
@@ -1893,11 +1893,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1917,11 +1917,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":owner",
+                    (uint8_t*)"owner",
                     (uint8_t*)"owner"
                 },
                 {
-                    (uint8_t*)":repo",
+                    (uint8_t*)"repo",
                     (uint8_t*)"repo"
                 }
             }
@@ -1948,7 +1948,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 }
             }
@@ -1961,7 +1961,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 }
             }
@@ -1974,11 +1974,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 },
                 {
-                    (uint8_t*)":org",
+                    (uint8_t*)"org",
                     (uint8_t*)"org"
                 }
             }
@@ -1991,7 +1991,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 }
             }
@@ -2004,7 +2004,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 }
             }
@@ -2017,7 +2017,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 }
             }
@@ -2030,11 +2030,11 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 2,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 },
                 {
-                    (uint8_t*)":target_user",
+                    (uint8_t*)"target_user",
                     (uint8_t*)"target_user"
                 }
             }
@@ -2047,7 +2047,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 }
             }
@@ -2060,7 +2060,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 }
             }
@@ -2073,7 +2073,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 }
             }
@@ -2086,7 +2086,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 }
             }
@@ -2099,7 +2099,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 }
             }
@@ -2112,7 +2112,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 }
             }
@@ -2125,7 +2125,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 }
             }
@@ -2138,7 +2138,7 @@ static const testdata_t GITHUB_API[142] = {
             .nitems = 1,
             .items = (usher_glob_item_t[]){
                 {
-                    (uint8_t*)":user",
+                    (uint8_t*)"user",
                     (uint8_t*)"user"
                 }
             }

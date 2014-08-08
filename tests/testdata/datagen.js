@@ -18,7 +18,7 @@ function path2testdata( path )
     
     while( ( match = RE_PATH.exec( path ) ) ){
         //console.log( match );
-        items.push([ match[1], match[2] ]);
+        items.push([ match[2], match[2] ]);
     }
     
     str = '{ \n' + SP4 +
