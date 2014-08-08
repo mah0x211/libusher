@@ -428,7 +428,9 @@ usher_error_t seg_add( const usher_t *u, usher_seg_t *seg, uint8_t *path,
             return USHER_EALREADY;
         }
         // call user defined finalizer
-        u->callback( (void*)state.seg->udata );
+        else if( u->callback ){
+            u->callback( (void*)state.seg->udata );
+        }
         state.seg->udata = udata;
     }
     // change to node
