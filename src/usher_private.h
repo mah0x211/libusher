@@ -54,7 +54,7 @@ usher_error_t seg_add( const usher_t *u, usher_seg_t *node, uint8_t *path,
 
 usher_match_t seg_get( usher_seg_t *seg, uint8_t *path, usher_state_t *state );
 
-usher_error_t seg_remove( usher_t *u, usher_seg_t *seg, uint8_t *path );
+usher_error_t seg_remove( usher_t *u, usher_seg_t *seg, uint8_t idx );
 
 usher_error_t seg_exec( const usher_t *u, usher_seg_t *seg, uint8_t *path,
                         usher_glob_t *glob );

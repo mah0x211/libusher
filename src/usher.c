@@ -104,16 +104,21 @@ usher_match_t usher_get( usher_t *u, const char *path, usher_state_t *state )
 
 usher_error_t usher_remove( usher_t *u, const char *path )
 {
-    if( !u->root ){
-        return USHER_ENOENT;
+    if( !path || !*path ){
+        return USHER_EINVAL;
     }
-    else if( path && *path ){
-        return seg_remove( u, u->root, (uint8_t*)path );
+    else if( u->root )
+    {
+        usher_state_t state;
+        
+        switch( seg_get( u->root, (uint8_t*)path, &state ) ){
+            case USHER_MATCH:
+                return seg_remove( u, state.seg, state.idx );
+        }
     }
-    
-    return USHER_EINVAL;
-}
 
+    return USHER_ENOENT;
+}
 
 usher_error_t usher_exec( usher_t *u, const char *path, usher_glob_t *glob )
 {
