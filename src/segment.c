@@ -317,7 +317,7 @@ static inline usher_error_t segment2edge( const usher_t *u, usher_seg_t *seg,
 }
 
 
-static inline usher_error_t branchoff( const usher_t *u, usher_seg_t *seg,
+static inline usher_error_t branchoff( usher_t *u, usher_seg_t *seg,
                                        size_t pos, uintptr_t udata )
 {
     uint8_t *path = pnalloc( pos + 1, uint8_t );
@@ -340,11 +340,17 @@ static inline usher_error_t branchoff( const usher_t *u, usher_seg_t *seg,
             if( err == USHER_OK )
             {
                 // update parent children
-                uint8_t idx = bsearch_child_idx( parent->parent->children,
-                                                 parent->parent->nchildren,
-                                                 *parent->path );
-                
-                parent->parent->children[idx] = parent;
+                if( parent->parent ){
+                    uint8_t idx = bsearch_child_idx( parent->parent->children,
+                                                     parent->parent->nchildren,
+                                                     *parent->path );
+                    
+                    parent->parent->children[idx] = parent;
+                }
+                // change root segment
+                else {
+                    u->root = parent;
+                }
                 // erase parent path string
                 seg->len -= pos;
                 memmove( seg->path, seg->path + pos, seg->len );
@@ -363,7 +369,7 @@ static inline usher_error_t branchoff( const usher_t *u, usher_seg_t *seg,
 }
 
 
-usher_error_t seg_add( const usher_t *u, usher_seg_t *seg, uint8_t *path,
+usher_error_t seg_add( usher_t *u, usher_seg_t *seg, uint8_t *path,
                        uintptr_t udata, int replace )
 {
     usher_error_t err = USHER_OK;
