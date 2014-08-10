@@ -677,6 +677,8 @@ CHECK_VARCHILD:
                 if( err != USHER_OK ){
                     goto RET_ERROR;
                 }
+                // set default error
+                err = USHER_ENOENT;
                 seg = child;
                 m = seg->path;
                 varhead = k;
