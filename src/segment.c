@@ -518,7 +518,7 @@ usher_error_t seg_remove( usher_t *u, usher_seg_t *seg, uint8_t idx )
         if( seg->nchildren )
         {
             // call user defined finalizer
-            if( u->callback && seg->type & USHER_SEG_EOS ){
+            if( u->callback ){
                 u->callback( (void*)seg->udata );
             }
             // unset flag
