@@ -104,6 +104,7 @@ typedef struct {
 } usher_state_t;
 
 usher_match_t usher_get( usher_t *u, const char *path, usher_state_t *state );
+usher_error_t usher_remove_segment( usher_t *u, usher_state_t *state );
 
 
 typedef struct {

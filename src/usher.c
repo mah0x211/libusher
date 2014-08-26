@@ -120,6 +120,20 @@ usher_error_t usher_remove( usher_t *u, const char *path )
     return USHER_ENOENT;
 }
 
+
+usher_error_t usher_remove_segment( usher_t *u, usher_state_t *state )
+{
+    if( !state ){
+        return USHER_EINVAL;
+    }
+    else if( u->root ){
+        return seg_remove( u, state->seg, state->idx );
+    }
+
+    return USHER_ENOENT;
+}
+
+
 usher_error_t usher_exec( usher_t *u, const char *path, usher_glob_t *glob )
 {
     if( path && *path && u->root ){
