@@ -1,5 +1,5 @@
 #libusher
-executable tree based container library.
+tree based container library.
 ***
 
 ## Install
