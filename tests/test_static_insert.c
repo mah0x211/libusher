@@ -15,7 +15,7 @@
 }while(0)
 
 
-void test_static_insert_short2long( const testdata_t data[], size_t len, const char *delim )
+static void test_static_insert_short2long( const testdata_t data[], size_t len, const char *delim )
 {
     usher_t *u = usher_alloc( delim, NULL );
     size_t i = 0;
@@ -32,7 +32,7 @@ void test_static_insert_short2long( const testdata_t data[], size_t len, const c
     usher_dealloc( u );
 }
 
-void test_static_insert_long2short( const testdata_t data[], size_t len, const char *delim )
+static void test_static_insert_long2short( const testdata_t data[], size_t len, const char *delim )
 {
     usher_t *u = usher_alloc( delim, NULL );
     size_t i = len;
@@ -52,9 +52,7 @@ void test_static_insert_long2short( const testdata_t data[], size_t len, const c
 }
 
 
-#ifdef TESTS
-
-int main(int argc, const char * argv[])
+void static_insert( void )
 {
     size_t len;
     
@@ -62,7 +60,13 @@ int main(int argc, const char * argv[])
     len = sizeof( STATIC_KEYS ) / sizeof( testdata_t );
     run_test( test_static_insert_short2long, STATIC_KEYS, len, NULL );
     run_test( test_static_insert_long2short, STATIC_KEYS, len, NULL );
-    
+}
+
+#ifdef TESTS
+
+int main(int argc, const char * argv[])
+{
+    static_insert();
     return 0;
 }
 

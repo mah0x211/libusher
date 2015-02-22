@@ -16,7 +16,7 @@
     do_remove_check( u, i, k ); \
 }while(0)
 
-void test_github_exec( const testdata_t data[], size_t len, const char *delim )
+static void test_github_exec( const testdata_t data[], size_t len, const char *delim )
 {
     usher_t *u = usher_alloc( delim, NULL );
     usher_error_t err;
@@ -64,16 +64,20 @@ void test_github_exec( const testdata_t data[], size_t len, const char *delim )
 }
 
 
-#ifdef TESTS
-
-int main(int argc, const char * argv[])
+void github_exec( void )
 {
     size_t len;
     
     // test: github api keys
     len = sizeof( GITHUB_API ) / sizeof( testdata_t );
     run_test( test_github_exec, GITHUB_API, len, "/:/" );
-    
+}
+
+#ifdef TESTS
+
+int main(int argc, const char * argv[])
+{
+    github_exec();
     return 0;
 }
 

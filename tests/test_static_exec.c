@@ -16,7 +16,7 @@
     do_remove_check( u, i, k ); \
 }while(0)
 
-void test_static_exec( const testdata_t data[], size_t len, const char *delim )
+static void test_static_exec( const testdata_t data[], size_t len, const char *delim )
 {
     usher_t *u = usher_alloc( delim, NULL );
     usher_error_t err;
@@ -64,16 +64,21 @@ void test_static_exec( const testdata_t data[], size_t len, const char *delim )
 }
 
 
-#ifdef TESTS
-
-int main(int argc, const char * argv[])
+void static_exec( void )
 {
     size_t len;
     
     // test: static keys
     len = sizeof( STATIC_KEYS ) / sizeof( testdata_t );
     run_test( test_static_exec, STATIC_KEYS, len, NULL );
-    
+}
+
+
+#ifdef TESTS
+
+int main(int argc, const char * argv[])
+{
+    static_exec();
     return 0;
 }
 

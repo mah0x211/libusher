@@ -70,22 +70,13 @@ static inline void do_remove_check( usher_t *u, int idx, const testdata_t data[]
 }
 
 
-void test_static_insert_short2long( const testdata_t data[], size_t len, const char *delim );
-void test_static_insert_long2short( const testdata_t data[], size_t len, const char *delim );
+void static_insert( void );
+void static_remove( void );
+void static_exec( void );
 
-void test_static_remove_short2long( const testdata_t data[], size_t len, const char *delim );
-void test_static_remove_long2short( const testdata_t data[], size_t len, const char *delim );
-
-void test_static_exec( const testdata_t data[], size_t len, const char *delim );
-
-
-void test_github_insert_short2long( const testdata_t data[], size_t len, const char *delim );
-void test_github_insert_long2short( const testdata_t data[], size_t len, const char *delim );
-
-void test_github_remove_short2long( const testdata_t data[], size_t len, const char *delim );
-void test_github_remove_long2short( const testdata_t data[], size_t len, const char *delim );
-
-void test_github_exec( const testdata_t data[], size_t len, const char *delim );
+void github_insert( void );
+void github_remove( void );
+void github_exec( void );
 
 #define run_test(fn,k,n,delim) do { \
     printf( "%-30s %-12s[%03zu][%3s] ", #fn, #k, n, delim ); \
