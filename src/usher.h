@@ -58,11 +58,11 @@ typedef struct _usher_seg {
     uintptr_t udata;
     uint8_t *path;
     size_t len;
-    struct _usher_seg *parent;
-    struct _usher_seg *varchild;
-    struct _usher_seg **children;
-    uint8_t nchildren;
+    int16_t varchild;
     uint8_t type;
+    uint8_t nchildren;
+    struct _usher_seg *parent;
+    struct _usher_seg **children;
 } usher_seg_t;
 
 typedef void(*usher_dealloc_cb)( void* );

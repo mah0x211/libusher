@@ -26,6 +26,11 @@
 
 #include "usher_private.h"
 
+#define HAVE_VARCHILD( seg )        ((seg) && (seg)->varchild >= 0)
+#define GET_VARCHILD( seg )         ((seg)->children[(seg)->varchild])
+#define GET_VARCHILD_TYPE( seg )    (((seg)->children[(seg)->varchild])->type)
+#define SET_VARCHILD( seg, idx )    ((seg)->varchild = idx)
+#define SET_VARCHILD_NIL( seg )     ((seg)->varchild = -1)
 
 static inline uint8_t bsearch_child_idx( usher_seg_t **children, uint8_t len,
                                          uint8_t c )
@@ -119,6 +124,7 @@ usher_error_t seg_alloc( usher_seg_t **pseg, const usher_t *u, uint8_t *path,
             memcpy( seg->path, path, len );
             seg->path[len] = 0;
             seg->len = len;
+            SET_VARCHILD_NIL( seg );
             
             // have children
             if( ptr && *ptr )
@@ -134,8 +140,9 @@ usher_error_t seg_alloc( usher_seg_t **pseg, const usher_t *u, uint8_t *path,
                         seg->nchildren = 1;
                         seg->children[0] = child;
                         child->parent = seg;
+                        // set varchild index
                         if( child->type & USHER_SEG_VAR ){
-                            seg->varchild = child;
+                            SET_VARCHILD( seg, 0 );
                         }
                         *pseg = seg;
                         
@@ -188,31 +195,38 @@ static inline usher_error_t append2child( usher_seg_t *seg, usher_seg_t *child )
     if( children )
     {
         uint8_t c = *child->path;
+        uint8_t idx = 0;
         
         seg->children = children;
         seg->nchildren++;
         child->parent = seg;
-        if( child->type & USHER_SEG_VAR ){
-            seg->varchild = child;
-        }
         
-        if( seg->nchildren == 1 ){
+        if( seg->nchildren == 1 )
+        {
             children[0] = child;
+            // set varchild index
+            if( child->type & USHER_SEG_VAR ){
+                SET_VARCHILD( seg, idx );
+            }
         }
         else
         {
-            uint8_t mid = bsearch_child_idx( children, seg->nchildren, c );
+            idx = bsearch_child_idx( children, seg->nchildren, c );
+            // set varchild index
+            if( child->type & USHER_SEG_VAR ){
+                SET_VARCHILD( seg, idx );
+            }
             
             if( seg->nchildren == 2 ){
-                children[1-mid] = children[0];
-                children[mid] = child;
+                children[1-idx] = children[0];
+                children[idx] = child;
             }
             else
             {
                 uint8_t right = seg->nchildren - 1;
                 
                 // move to right
-                for(; right > mid; right-- ){
+                for(; right > idx; right-- ){
                     children[right] = children[right-1];
                 }
                 // insert at middle position
@@ -268,6 +282,8 @@ static inline usher_error_t segment2edge( const usher_t *u, usher_seg_t *seg,
         if( ( seg->children = prealloc( NULL, 2, usher_seg_t* ) ) )
         {
             uint8_t i = 0;
+            uint8_t bidx = 0;
+            uint8_t sidx = 1;
             
             seg->len -= branch->len;
             // TODO: should release unused memory
@@ -283,19 +299,21 @@ static inline usher_error_t segment2edge( const usher_t *u, usher_seg_t *seg,
             else {
                 seg->children[0] = sibling;
                 seg->children[1] = branch;
+                bidx = 1;
+                sidx = 0;
             }
             branch->parent = seg;
             sibling->parent = seg;
             
             // check variable-segment
             if( branch->type & USHER_SEG_VAR ){
-                seg->varchild = branch;
+                SET_VARCHILD( seg, bidx );
             }
             else if( sibling->type & USHER_SEG_VAR ){
-                seg->varchild = sibling;
+                SET_VARCHILD( seg, sidx );
             }
             else {
-                seg->varchild = NULL;
+                SET_VARCHILD_NIL( seg );
             }
             
             // change children's parent
@@ -400,6 +418,7 @@ usher_error_t seg_add( usher_t *u, usher_seg_t *seg, uint8_t *path,
         if( state.seg->type & USHER_SEG_VAR && state.seg->path != state.cur ){
             return USHER_ESPLIT;
         }
+        
         // split node and append child segment
         err = seg_alloc( &child, u, state.remain, prev, udata );
         if( err == USHER_OK )
@@ -511,7 +530,7 @@ usher_error_t seg_remove( usher_t *u, usher_seg_t *seg, uint8_t idx )
         usher_seg_t *parent = seg->parent;
         
         if( parent && seg->type & USHER_SEG_VAR ){
-            parent->varchild = NULL;
+            SET_VARCHILD_NIL( parent );
         }
         
         // do not deallocate if segment has children
@@ -592,7 +611,7 @@ CHECK_PARENT:
                 // deallocate unused children
                 else if( seg->type & USHER_SEG_EOS ){
                     seg->children = pdealloc( seg->children );
-                    seg->varchild = NULL;
+                    SET_VARCHILD_NIL( seg );
                 }
                 // plain path-segment
                 else
@@ -721,8 +740,8 @@ CHECK_VARCHILD:
                 m = seg->path;
             }
             // jump if have varchild
-            else if( seg && seg->varchild ){
-                seg = seg->varchild;
+            else if( HAVE_VARCHILD( seg ) ){
+                seg = GET_VARCHILD( seg );
                 goto CHECK_VARCHILD;
             }
             // lookup eos segment from parents
@@ -740,8 +759,8 @@ CHECK_VARCHILD:
             if( seg->parent )
             {
                 // jump if have varchild
-                if( seg->parent->varchild ){
-                    seg = seg->parent->varchild;
+                if( HAVE_VARCHILD( seg->parent ) ){
+                    seg = GET_VARCHILD( seg->parent );
                     goto CHECK_VARCHILD;
                 }
                 // jump if parent is VEOS
@@ -778,14 +797,15 @@ CHECK_NEXT:
             goto RET_ERROR;
         }
         // substract variable-segment
-        else if( seg->varchild && seg->varchild->type & USHER_SEG_EOS )
+        else if( HAVE_VARCHILD( seg ) && 
+                 GET_VARCHILD_TYPE( seg ) & USHER_SEG_EOS )
         {
-            err = glob_add( &glob, seg->varchild, varhead,
+            err = glob_add( u, &glob, GET_VARCHILD( seg ), varhead,
                             strlen( (char*)varhead ) );
             if( err != USHER_OK ){
                 goto RET_ERROR;
             }
-            seg = seg->varchild;
+            seg = GET_VARCHILD( seg );
         }
         else if( glob.nitems )
         {
@@ -863,8 +883,8 @@ void seg_dump( usher_seg_t *seg, int lv, int last )
     
     printf( "%*s \"parent\": \"%s\",\n", pad, "", ( seg->parent ) ? (char*)seg->parent->path : "NONE" );
     
-    if( seg->varchild ){
-        printf( "%*s \"varchild\": \"%s\",\n", pad, "", (char*)seg->varchild->path );
+    if( HAVE_VARCHILD( seg ) ){
+        printf( "%*s \"varchild\": \"%s\",\n", pad, "", (char*)GET_VARCHILD( seg )->path );
     }
     
     if( seg->nchildren )
