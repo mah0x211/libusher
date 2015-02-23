@@ -255,7 +255,7 @@ static inline usher_error_t segment2edge( const usher_t *u, usher_seg_t *seg,
 {
     usher_seg_t *branch = NULL;
     usher_error_t err = seg_alloc( &branch, u, seg->path + pos,
-                                   *(seg->path + pos - 1), 0 );
+                                   ( pos ) ? *(seg->path + pos - 1) : 0, 0 );
     
     if( err == USHER_OK )
     {
