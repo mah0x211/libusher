@@ -800,7 +800,7 @@ CHECK_NEXT:
         else if( HAVE_VARCHILD( seg ) && 
                  GET_VARCHILD_TYPE( seg ) & USHER_SEG_EOS )
         {
-            err = glob_add( u, &glob, GET_VARCHILD( seg ), varhead,
+            err = glob_add( &glob, GET_VARCHILD( seg ), varhead,
                             strlen( (char*)varhead ) );
             if( err != USHER_OK ){
                 goto RET_ERROR;
