@@ -399,6 +399,11 @@ usher_error_t seg_add( usher_t *u, usher_seg_t *seg, uint8_t *path,
     // reached to tail of segment
     if( match == USHER_MATCH_LONG )
     {
+        // cannot split variable segment
+        if( state.seg->type & USHER_SEG_VAR ){
+            return USHER_ESPLIT;
+        }
+
         // append child
         err = seg_alloc( &child, u, state.remain, prev, udata );
         if( err == USHER_OK )
