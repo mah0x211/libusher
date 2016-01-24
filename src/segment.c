@@ -282,26 +282,21 @@ static inline usher_error_t segment2edge( const usher_t *u, usher_seg_t *seg,
         if( ( seg->children = prealloc( NULL, 2, usher_seg_t* ) ) )
         {
             uint8_t i = 0;
-            uint8_t bidx = 0;
-            uint8_t sidx = 1;
-            
+            // sort by first byte value
+            uint8_t sidx = *branch->path < *sibling->path;
+            uint8_t bidx = 1 - sidx;
+
             seg->len -= branch->len;
             // TODO: should release unused memory
             seg->path[seg->len] = 0;
             seg->nchildren = 2;
             seg->type = USHER_SEG_NODE;
             seg->udata = 0;
+
             // sort by first byte value
-            if( *branch->path < *sibling->path ){
-                seg->children[0] = branch;
-                seg->children[1] = sibling;
-            }
-            else {
-                seg->children[0] = sibling;
-                seg->children[1] = branch;
-                bidx = 1;
-                sidx = 0;
-            }
+            seg->children[bidx] = branch;
+            seg->children[sidx] = sibling;
+            
             branch->parent = seg;
             sibling->parent = seg;
             
