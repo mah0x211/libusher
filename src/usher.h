@@ -56,8 +56,8 @@ char *usher_strerror( usher_error_t err );
 typedef struct _usher_seg {
     // userdata
     uintptr_t udata;
-    uint8_t *path;
     size_t len;
+    uint8_t *path;
     int16_t varchild;
     uint8_t type;
     uint8_t nchildren;

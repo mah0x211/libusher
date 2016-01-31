@@ -415,7 +415,7 @@ usher_error_t seg_add( usher_t *u, usher_seg_t *seg, uint8_t *path,
     else if( match == USHER_MATCH_DIFF )
     {
         // cannot split variable segment
-        if( state.seg->type & USHER_SEG_VAR && state.seg->path != state.cur ){
+        if( state.seg->type & USHER_SEG_VAR ){
             return USHER_ESPLIT;
         }
         
