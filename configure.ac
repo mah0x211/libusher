@@ -42,7 +42,8 @@ AC_ARG_ENABLE(
     [ENABLE_DEBUG=$enableval], [ENABLE_DEBUG=no]
 )
 AS_IF([test "$ENABLE_DEBUG" != "no"],
-    [ AC_DEFINE([DEBUG], [1], [Define if you enabled debug]) ],
+    [ AC_DEFINE([DEBUG], [1], [Define if you enabled debug]),
+      AC_SUBST([CFLAGS], ["-g -O0"]) ],
     [ AC_SUBST([CFLAGS], ["-O3"]) ]
 )
 
