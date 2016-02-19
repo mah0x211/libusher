@@ -40,7 +40,7 @@ static inline uint8_t bsearch_child_idx( usher_seg_t **children, uint8_t len,
         uint8_t left = 0;
         uint8_t right = len - 1;
         uint8_t mid = 0;
-        
+
         // find middle
         while( left < right )
         {

@@ -111,9 +111,8 @@ usher_error_t usher_remove( usher_t *u, const char *path )
     {
         usher_state_t state;
         
-        switch( seg_get( u->root, (uint8_t*)path, &state ) ){
-            case USHER_MATCH:
-                return seg_remove( u, state.seg, state.idx );
+        if( seg_get( u->root, (uint8_t*)path, &state ) == USHER_MATCH ){
+            return seg_remove( u, state.seg, state.idx );
         }
     }
 
