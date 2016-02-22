@@ -138,6 +138,7 @@ usher_error_t usher_exec( usher_t *u, const char *path, usher_glob_t *glob )
     // set empty
     *glob = (usher_glob_t){
         .seg = NULL,
+        .eos = NULL,
         .nitems = 0,
         .items = NULL
     };

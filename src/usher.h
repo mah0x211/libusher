@@ -115,6 +115,7 @@ typedef struct {
 
 typedef struct {
     usher_seg_t *seg;
+    usher_seg_t *eos;
     size_t nitems;
     usher_glob_item_t *items;
 } usher_glob_t;
