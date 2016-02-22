@@ -135,10 +135,16 @@ usher_error_t usher_remove_segment( usher_t *u, usher_state_t *state )
 
 usher_error_t usher_exec( usher_t *u, const char *path, usher_glob_t *glob )
 {
+    // set empty
+    *glob = (usher_glob_t){
+        .seg = NULL,
+        .nitems = 0,
+        .items = NULL
+    };
     if( path && *path && u->root ){
         return seg_exec( u, u->root, (uint8_t*)path, glob );
     }
-    
+
     return USHER_ENOENT;
 }
 
