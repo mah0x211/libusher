@@ -670,6 +670,7 @@ usher_error_t seg_exec( const usher_t *u, usher_seg_t *seg, uint8_t *path,
     uint8_t *m = seg->path;
     uint8_t *k = path;
     uint8_t *varhead = k;
+    usher_seg_t *tail = seg;
     usher_seg_t *child = NULL;
     usher_glob_t glob = {
         .seg = NULL,
@@ -677,11 +678,6 @@ usher_error_t seg_exec( const usher_t *u, usher_seg_t *seg, uint8_t *path,
         .nitems = 0,
         .items = NULL
     };
-
-    // set last eos segment
-    if( seg->type & USHER_SEG_EOS ){
-        glob.eos = seg;
-    }
 
     // parse path-string
     while( *k )
@@ -699,18 +695,13 @@ CHECK_VARCHILD:
             // found child segment
             if( *k && ( child = seg_getchild( seg, *k ) ) )
             {
-                // set last eos segment
-                if( seg->type & USHER_SEG_EOS ){
-                    glob.eos = seg;
-                }
-
                 // substract variable-segment
                 err = glob_add( &glob, seg, varhead, k - varhead );
                 if( err != USHER_OK ){
                     goto RET_ERROR;
                 }
 
-                seg = child;
+                tail = seg = child;
                 m = seg->path;
                 varhead = k;
             }
@@ -730,7 +721,7 @@ CHECK_VARCHILD:
             }
             // lookup eos segment from parents
             else if( seg->parent && glob.nitems ){
-                seg = seg->parent;
+                tail = seg = seg->parent;
                 goto MERGE_PARENT;
             }
             // not found
@@ -745,12 +736,7 @@ CHECK_VARCHILD:
             // found child
             if( ( child = seg_getchild( seg, *k ) ) )
             {
-                // set last eos segment
-                if( seg->type & USHER_SEG_EOS ){
-                    glob.eos = seg;
-                }
-
-                seg = child;
+                tail = seg = child;
                 // jump if child is variable
                 if( seg->type & USHER_SEG_VAR ){
                     goto CHECK_VARCHILD;
@@ -758,14 +744,8 @@ CHECK_VARCHILD:
                 m = seg->path;
             }
             // jump if have varchild
-            else if( HAVE_VARCHILD( seg ) )
-            {
-                // set last eos segment
-                if( seg->type & USHER_SEG_EOS ){
-                    glob.eos = seg;
-                }
-
-                seg = GET_VARCHILD( seg );
+            else if( HAVE_VARCHILD( seg ) ){
+                tail = seg = GET_VARCHILD( seg );
                 goto CHECK_VARCHILD;
             }
             // lookup eos segment from parents
@@ -784,20 +764,13 @@ CHECK_VARCHILD:
             if( seg->parent )
             {
                 // jump if have varchild
-                if( HAVE_VARCHILD( seg->parent ) )
-                {
-                    seg = GET_VARCHILD( seg->parent );
-                    // set last eos segment
-                    if( seg->type & USHER_SEG_EOS ){
-                        glob.eos = seg;
-                    }
+                if( HAVE_VARCHILD( seg->parent ) ){
+                    tail = seg = GET_VARCHILD( seg->parent );
                     goto CHECK_VARCHILD;
                 }
                 // jump if parent is VEOS
                 else if( seg->parent->type == USHER_SEG_VEOS ){
-                    seg = seg->parent;
-                    // set last eos segment
-                    glob.eos = seg;
+                    tail = seg = seg->parent;
                     goto CHECK_VARCHILD;
                 }
             }
@@ -808,6 +781,7 @@ CHECK_VARCHILD:
             
             // not found
             err = USHER_ENOENT;
+            tail = tail->parent;
             goto RET_STATUS;
         }
         
@@ -820,19 +794,17 @@ CHECK_NEXT:
         k++;
         m++;
     }
-    
+
     // path is too short
     if( *m )
     {
         err = USHER_ENOENT;
-        // check parent
-        seg = seg->parent;
-        // not found
-        if( !seg ){
+        // parent not found
+        if( !( seg = seg->parent ) ){
             goto RET_STATUS;
         }
         // substract variable-segment
-        else if( HAVE_VARCHILD( seg ) && 
+        else if( HAVE_VARCHILD( seg ) &&
                  GET_VARCHILD_TYPE( seg ) & USHER_SEG_EOS )
         {
             seg = GET_VARCHILD( seg );
@@ -843,9 +815,11 @@ CHECK_NEXT:
         }
         else if( glob.nitems )
         {
+            tail = seg;
+
 MERGE_PARENT:
-            
-            do {
+            do
+            {
                 if( seg->type & USHER_SEG_VAR )
                 {
                     // deallocate last glob
@@ -861,19 +835,30 @@ MERGE_PARENT:
                 err = USHER_ENOENT;
                 goto RET_STATUS;
             }
-            
+
             err = glob_add( &glob, seg, varhead, strlen( (char*)varhead ) );
             if( err != USHER_OK ){
                 goto RET_ERROR;
             }
         }
     }
-    
+
+
 RET_STATUS:
     // set current segment
     glob.seg = seg;
-    if( seg && seg->type & USHER_SEG_EOS ){
+    if( err == USHER_OK ){
         glob.eos = seg;
+    }
+    else if( ( seg = tail ) )
+    {
+        do
+        {
+            if( seg->type & USHER_SEG_EOS ){
+                glob.eos = seg;
+                break;
+            }
+        } while( ( seg = seg->parent ) );
     }
     // set result
     *pglob = glob;
