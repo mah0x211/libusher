@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.61)
-AC_INIT(libusher, 0.11.0)
+AC_INIT(libusher, 0.11.1)
 AC_CONFIG_SRCDIR([src/usher.c])
 AM_INIT_AUTOMAKE([foreign no-dist no-installinfo no-installman -Wall])
 AC_CONFIG_HEADER([config.h])
