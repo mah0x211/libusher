@@ -842,7 +842,9 @@ MERGE_PARENT:
             }
         }
     }
-
+    else if( !( seg->type & USHER_SEG_EOS ) ){
+        err = USHER_ENOENT;
+    }
 
 RET_STATUS:
     // set current segment
